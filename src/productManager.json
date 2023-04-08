@@ -1,0 +1,92 @@
+[
+	{
+		"id": 1,
+		"title": "camisa roja",
+		"description": "marca joh holden",
+		"price": 250,
+		"thumbnail": "ruta en firebase",
+		"code": "CA-01",
+		"stock": 5
+	},
+	{
+		"id": 2,
+		"title": "blusa",
+		"description": "blusa roja Zara",
+		"price": 180,
+		"thumbnail": "ruta en firebase de blusa",
+		"code": "BLU-01",
+		"stock": 5
+	},
+	{
+		"id": 3,
+		"title": "zapato",
+		"description": "zapato adidas",
+		"price": 200,
+		"thumbnail": "ruta en firebase2",
+		"code": "ZA-01",
+		"stock": 3
+	},
+	{
+		"id": 4,
+		"title": "botas",
+		"description": "botas rickborn",
+		"price": 150,
+		"thumbnail": "ruta en firebase de botas",
+		"code": "BO-01",
+		"stock": 5
+	},
+	{
+		"id": 5,
+		"title": "Polo",
+		"description": "Polo rojo",
+		"price": 100,
+		"thumbnail": "ruta en firebase de Polo",
+		"code": "PO-01",
+		"stock": 5
+	},
+	{
+		"id": 6,
+		"title": "Zapatilla",
+		"description": "Zapatillas Estela",
+		"price": 120,
+		"thumbnail": "ruta en firebase",
+		"code": "ZA-02",
+		"stock": 5
+	},
+	{
+		"id": 7,
+		"title": "Medias",
+		"description": "medias rojas",
+		"price": 10,
+		"thumbnail": "ruta en firebase",
+		"code": "ME-01",
+		"stock": 5
+	},
+	{
+		"id": 8,
+		"title": "blusa",
+		"description": "blusa verde Karen",
+		"price": 130,
+		"thumbnail": "ruta en firebase",
+		"code": "BLU-02",
+		"stock": 5
+	},
+	{
+		"id": 9,
+		"title": "Gorro",
+		"description": "Gorro Verde",
+		"price": 40,
+		"thumbnail": "ruta en firebase",
+		"code": "GO-01",
+		"stock": 5
+	},
+	{
+		"id": 10,
+		"title": "Sombreros",
+		"description": "Sombrero grande clasico",
+		"price": 200,
+		"thumbnail": "ruta en firebase",
+		"code": "SO-01",
+		"stock": 5
+	}
+]
