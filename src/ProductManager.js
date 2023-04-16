@@ -12,9 +12,9 @@ export class ProductManager {
     this.idCounter = mayorId
   }
 
-  addProduct(title, description, price, thumbnail, code, stock,status,category) {
+  addProduct(title, description, price, thumbnails, code, stock,status,category) {
     // que todos los campos sean obligatorios
-    if (!title || !description || !price || !thumbnail || !code || !stock || !status || !category) return
+    if (!title || !description || !price || !thumbnails || !code || !stock || !status || !category) return
     // Validar que no se repita el campo “code” 
     for (const product of this.products) {
       if (product.code === code) return
@@ -23,7 +23,7 @@ export class ProductManager {
     this.idCounter++
     const id = this.idCounter
     // inseertando producto a products
-    this.products.push({ id, title, description, price, thumbnail, code, stock,status,category })
+    this.products.push({ id, title, description, price, thumbnails, code, stock,status,category })
     fs.writeFileSync(this.path, JSON.stringify(this.products, null, '\t'))
   }
   getProducts() {

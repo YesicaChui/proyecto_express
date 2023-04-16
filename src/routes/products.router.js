@@ -1,6 +1,6 @@
 import {Router} from 'express'
 import { ProductManager } from "../ProductManager.js";
-const productManager = new ProductManager('./src/productManager.json')
+const productManager = new ProductManager('./src/productos.json')
 const router = Router();
 
 
@@ -26,13 +26,30 @@ router.get('/:pid',(req,res)=>{
 })
 
 router.post('/',(req,res)=>{
-  let {title, description, price, thumbnail, code, stock,status,category} = req.body
-  if (!title || !description || !price || !thumbnail || !code || !stock|| !status || !category){
+  let {title, description, price, thumbnails, code, stock,status,category} = req.body
+  if (!title || !description || !price || !thumbnails || !code || !stock|| !status || !category){
     return res.status(400).send({status:"error",error:"Datos incompletos"})
   }
-  productManager.addProduct(title, description, price, thumbnail, code, stock,status,category)
+  productManager.addProduct(title, description, price, thumbnails, code, stock,status,category)
   res.send({status:"success",message:"Product Created"})
 })
 
+router.put('/:pid',(req,res)=>{
+  let {pid} = req.params
+  const mensaje=productManager.updateProduct(Number(pid),req.body)
+  if(mensaje==="No se ha encontrado un objeto con el id especificado."){
+    return res.status(404).send({status:"error",message:"Producto no encontrado"}) 
+  }
+  res.send({status:"success",message:"Producto actualizado"})
+})
+
+router.delete('/:pid',(req,res)=>{
+  let {pid} = req.params
+  const mensaje=productManager.deleteProduct(Number(pid))
+  if(mensaje==="No se ha encontrado un objeto con el id especificado."){
+    return res.status(404).send({status:"error",message:"Producto no encontrado"}) 
+  }
+  res.send({status:"success",message:"Producto eliminado"})
+})
 
 export default router;

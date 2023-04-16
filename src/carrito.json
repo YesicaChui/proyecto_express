@@ -1,0 +1,19 @@
+[
+	{
+		"id": 1,
+		"products": [
+			{
+				"product": 5,
+				"quantity": 3
+			},
+			{
+				"product": 6,
+				"quantity": 1
+			}
+		]
+	},
+	{
+		"id": 2,
+		"products": []
+	}
+]

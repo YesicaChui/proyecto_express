@@ -88,16 +88,5 @@
 		"thumbnail": "ruta en firebase",
 		"code": "SO-01",
 		"stock": 5
-	},
-	{
-		"id": 11,
-		"title": "Gorros",
-		"description": "Gorro Rojo",
-		"price": 50,
-		"thumbnail": "ruta en firebase",
-		"code": "GO-02",
-		"stock": 5,
-		"status": true,
-		"category": "proteccion solar"
 	}
 ]
