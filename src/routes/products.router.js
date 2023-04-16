@@ -26,11 +26,11 @@ router.get('/:pid',(req,res)=>{
 })
 
 router.post('/',(req,res)=>{
-  let {title, description, price, thumbnail, code, stock} = req.body
-  if (!title || !description || !price || !thumbnail || !code || !stock){
+  let {title, description, price, thumbnail, code, stock,status,category} = req.body
+  if (!title || !description || !price || !thumbnail || !code || !stock|| !status || !category){
     return res.status(400).send({status:"error",error:"Datos incompletos"})
   }
-  productManager.addProduct(title, description, price, thumbnail, code, stock)
+  productManager.addProduct(title, description, price, thumbnail, code, stock,status,category)
   res.send({status:"success",message:"Product Created"})
 })
 
