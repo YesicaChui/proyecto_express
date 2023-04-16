@@ -2,9 +2,14 @@ import fs from 'fs'
 
 export class ProductManager {
   constructor(path) {
-    this.products = []
-    this.idCounter = 0
+    // this.products = []
+    // this.idCounter = 0
     this.path = path
+    const contenido = fs.readFileSync(this.path, 'utf-8')
+    this.products = JSON.parse(contenido)
+    const ids = this.products.map(objeto => objeto.id);
+    const mayorId = Math.max(...ids)
+    this.idCounter = mayorId
   }
 
   addProduct(title, description, price, thumbnail, code, stock) {
@@ -22,19 +27,9 @@ export class ProductManager {
     fs.writeFileSync(this.path, JSON.stringify(this.products, null, '\t'))
   }
   getProducts() {
-    const contenido = fs.readFileSync(this.path, 'utf-8')
-    this.products = JSON.parse(contenido)
-    const ids = this.products.map(objeto => objeto.id);
-    const mayorId = Math.max(...ids)
-    this.idCounter = mayorId
     return this.products
   }
   getProductById(id) {
-    const contenido = fs.readFileSync(this.path, 'utf-8')
-    this.products = JSON.parse(contenido)
-    const ids = this.products.map(objeto => objeto.id);
-    const mayorId = Math.max(...ids)
-    this.idCounter = mayorId
     for (const product of this.products) {
       if (product.id === id) {
         return product
@@ -46,14 +41,7 @@ export class ProductManager {
   updateProduct(id, campos) {
     // verificando que no me envie el id en campos
     if(campos.id) return
-    const contenido = fs.readFileSync(this.path, 'utf-8')
-    this.products = JSON.parse(contenido)
-    const ids = this.products.map(objeto => objeto.id);
-    const mayorId = Math.max(...ids)
-    this.idCounter = mayorId
-
     const indice = this.products.findIndex(objeto => objeto.id === id);
-
     if (indice !== -1) {
       this.products[indice] = {
         ...this.products[indice],
@@ -67,13 +55,7 @@ export class ProductManager {
   }
 
   deleteProduct(id){
-    const contenido = fs.readFileSync(this.path, 'utf-8')
-    this.products = JSON.parse(contenido)
-    const ids = this.products.map(objeto => objeto.id);
-    const mayorId = Math.max(...ids)
-    this.idCounter = mayorId
     const indice = this.products.findIndex(objeto => objeto.id === id);
-
     if (indice !== -1) {
       this.products.splice(indice,1)
       fs.writeFileSync(this.path, JSON.stringify(this.products, null, '\t'))
