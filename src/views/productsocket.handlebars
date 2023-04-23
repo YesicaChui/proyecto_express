@@ -1,0 +1,30 @@
+<h1>Lista de Productos WebSocket</h1>
+<table border="1px">
+  <tr>
+    <th>id</th>
+    <th>title</th>
+    <th>description</th>
+    <th>price</th>
+    <th>thumbnail</th>
+    <th>code</th>
+    <th>stock</th>
+  </tr>
+  <tbody id="tbody">
+    {{#each productos}}
+    <tr>
+      <td>{{this.id}}</td>
+      <td>{{this.title}}</td>
+      <td>{{this.description}}</td>
+      <td>{{this.price}}</td>
+      <td>{{this.thumbnail}}</td>
+      <td>{{this.code}}</td>
+      <td>{{this.stock}}</td>
+    </tr>
+    {{/each}}
+  </tbody>
+
+</table>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="/socket.io/socket.io.js"></script>
+<script src="index.js"></script>
