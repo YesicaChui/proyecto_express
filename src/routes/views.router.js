@@ -1,15 +1,15 @@
 import express from 'express'
 const router = express.Router()
-import { ProductManager } from "../ProductManager.js";
-const productManager = new ProductManager('./src/productos.json')
+import { ProductManagerMongoDB } from '../dao/ProductManagerMongoDB.js'
+const productManager = new ProductManagerMongoDB()
 
-router.get('/', (req, res) => {
-    const productos = productManager.getProducts()
+router.get('/', async (req, res) => {
+    const productos =await productManager.getProducts()
     res.render('index', { productos })
 })
 
-router.get('/realtimeproducts', (req, res) => {
-    const productos = productManager.getProducts()
+router.get('/realtimeproducts', async (req, res) => {
+    const productos =await productManager.getProducts()
     res.render('productsocket', { productos })
 })
 
