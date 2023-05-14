@@ -20,7 +20,7 @@ export default function (io) {
   router.get('/:pid', async (req, res) => {
     const { pid } = req.params
     console.log(req.params)
-    const product = await productManager.getProductById(Number(pid))
+    const product = await productManager.getProductById(pid)
     if (product === "Not found") {
       res.send({ error: "Producto no existe" })
     } else {

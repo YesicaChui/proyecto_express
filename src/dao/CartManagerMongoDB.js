@@ -41,5 +41,61 @@ export class CartManagerMongoDB {
     await cartModel.updateOne({ _id: cid }, { products: cart.products }).exec();
    }
 
+   async removeProductCart(cid, pid) {
+    if (!cid || !pid) return;
+    const cart = await cartModel.findOne({ _id: cid });
+    if (!cart) return "Not Found";
+    const productIndex = cart.products.findIndex(
+      (product) => product.product === pid
+    );
+    if (productIndex === -1) {
+      return "Not Found";
+    } else {
+      cart.products.splice(productIndex, 1);
+      await cartModel.updateOne({ _id: cid }, { products: cart.products }).exec();
+      return cart;
+    }
+  }
 
+  async updateCart(cid, products) {
+    if (!cid) return;
+    const cart = await cartModel.findOne({ _id: cid });
+    if (!cart) return "Not Found";
+    cart.products = products;
+    await cartModel.updateOne({ _id: cid }, { products: cart.products }).exec();
+    return cart;
+  }
+
+
+  async updateProductQuantity(cid, pid, quantity) {
+    if (!cid || !pid) return;
+    const cart = await cartModel.findOne({ _id: cid });
+    if (!cart) return "Not Found";
+    const productIndex = cart.products.findIndex(
+      (product) => product.product === pid
+    );
+    if (productIndex === -1) {
+      return "Not Found";
+    } else {
+      cart.products[productIndex].quantity = quantity;
+      await cartModel.updateOne({ _id: cid }, { products: cart.products }).exec();
+      return cart;
+    }
+  }
+
+  async deleteCart(cid) {
+    if (!cid) return;
+    const result = await cartModel.deleteOne({ _id: cid });
+    if (result.deletedCount === 0) return "Not Found";
+    return result;
+  }
+
+  async getCartById(id) {
+    const cart = await cartModel.findOne({ _id:id })
+                                  .populate('products.product')
+                                  .lean()
+                                  .exec();
+    if (!cart) return "Not found";
+    return cart;
+  }
 }
