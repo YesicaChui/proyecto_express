@@ -33,13 +33,49 @@ export class ProductManagerMongoDB {
     }
   }
 
-  async getProducts() {
+  async getProducts({ limit = 10, page = 1, query, sort }) {
     try {
-      // Obtener todos los productos de la base de datos
-      const products = await productModel.find({}).lean().exec()
-      return products
+      const filter = {};
+      if (query) {
+        filter.category = query;
+      }
+      
+      const sortOptions = {};
+      if (sort === "asc") {
+        sortOptions.price = 1;
+      } else if (sort === "desc") {
+        sortOptions.price = -1;
+      }
+  
+      const options = {
+        page: page,
+        limit: limit,
+        sort: sortOptions
+      };
+  
+      const products = await productModel.paginate(filter, options)
+      const totalPages = products.totalPages
+      const prevPage = products.hasPrevPage ? products.prevPage : null
+      const nextPage = products.hasNextPage ? products.nextPage : null
+      const pageObj = {
+        status: "success",
+        payload: products.docs,
+        totalPages: totalPages,
+        prevPage: prevPage,
+        nextPage: nextPage,
+        page: page,
+        hasPrevPage: products.hasPrevPage,
+        hasNextPage: products.hasNextPage,
+        prevLink: products.hasPrevPage ? `/products?page=${prevPage}&limit=${limit}` : null,
+        nextLink: products.hasNextPage ? `/products?page=${nextPage}&limit=${limit}` : null
+      }
+      return pageObj
     } catch (error) {
-      console.error(error)
+      console.error(error);
+      return {
+        status: "error",
+        message: error.message
+      };
     }
   }
 

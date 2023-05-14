@@ -16,7 +16,8 @@ const main = async ()=>{
         "price": 250,
         "thumbnail": "ruta en firebase",
         "code": "CA-01",
-        "stock": 5
+        "stock": 5,
+        "category":"camiseria"
       },
       {
         "title": "blusa",
@@ -24,7 +25,8 @@ const main = async ()=>{
         "price": 180,
         "thumbnail": "ruta en firebase de blusa",
         "code": "BLU-01",
-        "stock": 5
+        "stock": 5,
+        "category":"camiseria"
       },
       {
         "title": "zapato",
@@ -32,7 +34,8 @@ const main = async ()=>{
         "price": 200,
         "thumbnail": "ruta en firebase2",
         "code": "ZA-01",
-        "stock": 3
+        "stock": 3,
+        "category":"calzado"
       },
       {
         "title": "botas",
@@ -40,7 +43,8 @@ const main = async ()=>{
         "price": 150,
         "thumbnail": "ruta en firebase de botas",
         "code": "BO-01",
-        "stock": 5
+        "stock": 5,
+        "category":"calzado"
       },
       {
         "title": "Polo",
@@ -48,7 +52,8 @@ const main = async ()=>{
         "price": 100,
         "thumbnail": "ruta en firebase de Polo",
         "code": "PO-01",
-        "stock": 5
+        "stock": 5,
+        "category":"camiseria"
       },
       {
         "title": "Zapatilla",
@@ -56,7 +61,8 @@ const main = async ()=>{
         "price": 120,
         "thumbnail": "ruta en firebase",
         "code": "ZA-02",
-        "stock": 5
+        "stock": 5,
+        "category":"calzado"
       },
       {
         "title": "Medias",
@@ -64,7 +70,8 @@ const main = async ()=>{
         "price": 10,
         "thumbnail": "ruta en firebase",
         "code": "ME-01",
-        "stock": 5
+        "stock": 5,
+        "category":"calzado"
       },
       {
         "title": "blusa",
@@ -72,7 +79,8 @@ const main = async ()=>{
         "price": 130,
         "thumbnail": "ruta en firebase",
         "code": "BLU-02",
-        "stock": 5
+        "stock": 5,
+        "category":"camiseria"
       },
       {
         "title": "Gorro",
@@ -80,7 +88,8 @@ const main = async ()=>{
         "price": 40,
         "thumbnail": "ruta en firebase",
         "code": "GO-01",
-        "stock": 5
+        "stock": 5,
+        "category":"accesorios"
       },
       {
         "title": "Sombreros",
@@ -88,7 +97,8 @@ const main = async ()=>{
         "price": 200,
         "thumbnail": "ruta en firebase",
         "code": "SO-01",
-        "stock": 5
+        "stock": 5,
+        "category":"accesorios"
       }
     ]
   )

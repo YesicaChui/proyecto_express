@@ -5,13 +5,16 @@ const router = Router();
 
 export default function (io) {
   router.get('/', async(req, res) => {
-    const { limit } = req.query
+/*     const { limit=10,page=1,query,sort } = req.query
     console.log(req.query)
     if (limit != undefined) {
       res.send(await productManager.getProducts().slice(0, limit))
     } else {
       res.send(await productManager.getProducts())
-    }
+    } */
+    const { limit, page, query, sort } = req.query
+    const result = await productManager.getProducts({ limit, page, query, sort })
+    res.send(result)
   })
 
   router.get('/:pid', async (req, res) => {

@@ -15,7 +15,8 @@
 		"price": 180,
 		"thumbnail": "ruta en firebase de blusa",
 		"code": "BLU-01",
-		"stock": 5
+		"stock": 5,
+		"category":"camiseria"
 	},
 	{
 		"id": 3,
@@ -24,7 +25,8 @@
 		"price": 200,
 		"thumbnail": "ruta en firebase2",
 		"code": "ZA-01",
-		"stock": 3
+		"stock": 3,
+		"category":"calzado"
 	},
 	{
 		"id": 4,
@@ -33,7 +35,8 @@
 		"price": 150,
 		"thumbnail": "ruta en firebase de botas",
 		"code": "BO-01",
-		"stock": 5
+		"stock": 5,
+		"category":"calzado"
 	},
 	{
 		"id": 5,
@@ -42,7 +45,8 @@
 		"price": 100,
 		"thumbnail": "ruta en firebase de Polo",
 		"code": "PO-01",
-		"stock": 5
+		"stock": 5,
+		"category":"camiseria"
 	},
 	{
 		"id": 6,
@@ -51,7 +55,8 @@
 		"price": 120,
 		"thumbnail": "ruta en firebase",
 		"code": "ZA-02",
-		"stock": 5
+		"stock": 5,
+		"category":"calzado"
 	},
 	{
 		"id": 7,
@@ -60,7 +65,8 @@
 		"price": 10,
 		"thumbnail": "ruta en firebase",
 		"code": "ME-01",
-		"stock": 5
+		"stock": 5,
+		"category":"calzado"
 	},
 	{
 		"id": 8,
@@ -78,7 +84,8 @@
 		"price": 40,
 		"thumbnail": "ruta en firebase",
 		"code": "GO-01",
-		"stock": 5
+		"stock": 5,
+		"category":"accesorios"
 	},
 	{
 		"id": 10,
@@ -87,6 +94,7 @@
 		"price": 200,
 		"thumbnail": "ruta en firebase",
 		"code": "SO-01",
-		"stock": 5
+		"stock": 5,
+		"category":"accesorios"
 	}
 ]
