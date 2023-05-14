@@ -50,7 +50,8 @@ export class ProductManagerMongoDB {
       const options = {
         page: page,
         limit: limit,
-        sort: sortOptions
+        sort: sortOptions,
+        lean:true
       };
   
       const products = await productModel.paginate(filter, options)
@@ -66,8 +67,8 @@ export class ProductManagerMongoDB {
         page: page,
         hasPrevPage: products.hasPrevPage,
         hasNextPage: products.hasNextPage,
-        prevLink: products.hasPrevPage ? `/products?page=${prevPage}&limit=${limit}` : null,
-        nextLink: products.hasNextPage ? `/products?page=${nextPage}&limit=${limit}` : null
+        prevLink: products.hasPrevPage ? `/views/products?page=${prevPage}&limit=${limit}` : null,
+        nextLink: products.hasNextPage ? `/views/products?page=${nextPage}&limit=${limit}` : null
       }
       return pageObj
     } catch (error) {

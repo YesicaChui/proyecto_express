@@ -10,7 +10,7 @@
     <th>stock</th>
   </tr>
   <tbody id="tbody">
-    {{#each productos}}
+    {{#each productos.payload}}
     <tr>
       <td>{{this.id}}</td>
       <td>{{this.title}}</td>
@@ -24,7 +24,14 @@
   </tbody>
 
 </table>
-
+    <div>
+        {{#if productos.hasPrevPage}}
+            <a href="{{prevLink}}">Anterior</a>
+        {{/if}}
+        {{#if productos.hasNextPage}}
+            <a href="{{nextLink}}">Siguiente</a>
+        {{/if}}
+    </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="index.js"></script>

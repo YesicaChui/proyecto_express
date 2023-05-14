@@ -1,5 +1,5 @@
 <h1>Lista de Productos</h1>
-  <table border="1px">
+<table border="1px">
   <tr>
     <th>id</th>
     <th>title</th>
@@ -9,9 +9,9 @@
     <th>code</th>
     <th>stock</th>
   </tr>
-  {{#each productos}}
+  {{#each productos.payload}}
   <tr>
-    <td>{{this.id}}</td>
+    <td>{{this._id}}</td>
     <td>{{this.title}}</td>
     <td>{{this.description}}</td>
     <td>{{this.price}}</td>
@@ -20,4 +20,12 @@
     <td>{{this.stock}}</td>
   </tr>
   {{/each}}
-  </table>
+</table>
+<div>
+  {{#if productos.hasPrevPage}}
+  <a href="{{productos.prevLink}}">Anterior</a>
+  {{/if}}
+  {{#if productos.hasNextPage}}
+  <a href="{{productos.nextLink}}">Siguiente</a>
+  {{/if}}
+</div>

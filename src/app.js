@@ -21,7 +21,7 @@ try {
   await mongoose.connect('mongodb+srv://yesicachuic:yesica@backendbasico.s7qaobr.mongodb.net/ecommerce')
   const httpServer = app.listen(8080,()=>console.log("servidor encendido en puerto 8080"))
   const socketServer = new Server(httpServer)
-  app.use('/', routerViews)
+  app.use('/views', routerViews)
   app.use('/products',productRouter(socketServer))
   app.use('/carts',cartRouter)
   
