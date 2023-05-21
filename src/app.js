@@ -6,6 +6,9 @@ import  routerViews from './routes/views.router.js'
 import __dirname from './utils.js'
 import { Server } from 'socket.io'
 import mongoose from 'mongoose'
+import sessionRouter from './routes/session.router.js'
+import session from "express-session";
+import MongoStore from "connect-mongo";
 const app = express()
 app.use(json())
 app.use(urlencoded({extended:true}))
@@ -16,14 +19,28 @@ app.set('view engine', 'handlebars')
 
 app.use(express.static('./src/public'))
 
+app.use(session({
+  store: MongoStore.create({
+      mongoUrl: 'mongodb+srv://yesicachuic:yesica@backendbasico.s7qaobr.mongodb.net',
+      dbName: 'ecommerce'
+  }),
+  secret: 'mysecret',
+  resave: true,
+  saveUninitialized: true
+}))
+
 mongoose.set('strictQuery', false)
 try {
   await mongoose.connect('mongodb+srv://yesicachuic:yesica@backendbasico.s7qaobr.mongodb.net/ecommerce')
   const httpServer = app.listen(8080,()=>console.log("servidor encendido en puerto 8080"))
   const socketServer = new Server(httpServer)
+  app.get('/', (req, res) => {
+    res.redirect('/api/sessions/login');
+  });
   app.use('/views', routerViews)
   app.use('/products',productRouter(socketServer))
   app.use('/carts',cartRouter)
+  app.use('/api/sessions',sessionRouter)
   
   socketServer.on('connection', (socketClient) => {
     console.log(`Nuevo cliente ${socketClient.id} conectado...`)
