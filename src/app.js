@@ -9,6 +9,8 @@ import mongoose from 'mongoose'
 import sessionRouter from './routes/session.router.js'
 import session from "express-session";
 import MongoStore from "connect-mongo";
+import passport from 'passport'
+import initializePassport from "./passport.config.js";
 const app = express()
 app.use(json())
 app.use(urlencoded({extended:true}))
@@ -29,7 +31,12 @@ app.use(session({
   saveUninitialized: true
 }))
 
+
+
 mongoose.set('strictQuery', false)
+initializePassport()
+app.use(passport.initialize())
+app.use(passport.session())
 try {
   await mongoose.connect('mongodb+srv://yesicachuic:yesica@backendbasico.s7qaobr.mongodb.net/ecommerce')
   const httpServer = app.listen(8080,()=>console.log("servidor encendido en puerto 8080"))

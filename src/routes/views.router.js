@@ -25,7 +25,7 @@ router.get('/realtimeproducts', async (req, res) => {
 router.get('/products',auth, async (req, res) => {
     const { limit, page, query, sort } = req.query
     const productos =await productManager.getProducts({ limit, page, query, sort })
-    //const productos = mproductos.payload.map(p => p.toObject())    
+    //const productos = mproductos.payload.map(p => p.toObject())   
     res.render('index', {  productos,profile:req.session.user  })
 })
 export default router
