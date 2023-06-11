@@ -1,6 +1,7 @@
 import { Router } from "express";
 import UserModel from "../models/user.model.js";
 import passport from "passport"
+import { generateToken,authToken } from "../utils.js";
 const router = Router()
 
 //Vista para registrar usuarios
@@ -58,6 +59,8 @@ router.post('/login', passport.authenticate('login', {
         ...req.user.toObject(),
         role
     }
+    const access_token = generateToken(req.user.toObject())
+    res.cookie('micookie', access_token)
     res.redirect('/views/products')
 })
 
