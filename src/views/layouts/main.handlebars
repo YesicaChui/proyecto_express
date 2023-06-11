@@ -1,12 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Productos</title>
+  <script>
+    function leerCookie() {
+      fetch('http://localhost:8080/api/sessions/current')
+        .then(response => response.json())
+        .then(data => {
+          // Mostrar los datos en un alert
+          alert(JSON.stringify(data));
+        })
+        .catch(error => {
+          console.error('Hubo un error:', error);
+        });
+    }
+  </script>
 </head>
+
 <body>
   {{{body}}}
 </body>
+
 </html>
