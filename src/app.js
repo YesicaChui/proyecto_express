@@ -12,6 +12,8 @@ import MongoStore from "connect-mongo";
 import passport from 'passport'
 import initializePassport from "./passport.config.js";
 import cookieParser from 'cookie-parser'
+import chatRouter from './routes/chat.router.js'
+import Sockets from './sockets.js'
 const app = express()
 app.use(json())
 app.use(urlencoded({extended:true}))
@@ -43,17 +45,31 @@ try {
   await mongoose.connect('mongodb+srv://yesicachuic:yesica@backendbasico.s7qaobr.mongodb.net/ecommerce')
   const httpServer = app.listen(8080,()=>console.log("servidor encendido en puerto 8080"))
   const socketServer = new Server(httpServer)
+  app.use((req, res, next) => {
+    req.io = socketServer
+    next()
+})
   app.get('/', (req, res) => {
     res.redirect('/api/sessions/login');
   });
   app.use('/views', routerViews)
-  app.use('/products',productRouter(socketServer))
-  app.use('/carts',cartRouter)
+  app.use('/products',productRouter)
+  app.use('/api/carts',cartRouter)
   app.use('/api/sessions',sessionRouter)
+  app.use("/chat", chatRouter)
   
-  socketServer.on('connection', (socketClient) => {
+  Sockets(socketServer)
+/*   socketServer.on('connection', async(socketClient) => {
     console.log(`Nuevo cliente ${socketClient.id} conectado...`)
-  })
+    socket.broadcast.emit('alerta')
+    let messages = await messageModel.find().lean().exec()
+    socket.emit("logs", messages)
+    socket.on("message", async data => {
+        await messageModel.create(data)
+        let messages = await messageModel.find().lean().exec()
+        io.emit("logs", messages)
+    })
+  }) */
 
 
 } catch (error) {

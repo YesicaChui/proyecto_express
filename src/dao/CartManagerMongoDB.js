@@ -1,4 +1,4 @@
-import cartModel from "../models/cart.model.js";
+import cartModel from "./models/cart.model.js";
 
 export class CartManagerMongoDB {
   constructor () {
@@ -13,7 +13,7 @@ export class CartManagerMongoDB {
     fs.writeFileSync(this.path, JSON.stringify(this.carts, null, '\t'))
  */  
     const cartGenerated = new cartModel({ products })
-    await cartGenerated.save()
+    return await cartGenerated.save()
   }
 
   async getCartById(id) {
