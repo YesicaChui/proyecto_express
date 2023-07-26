@@ -24,6 +24,32 @@ export const authToken = (req, res, next) => {
     })
 }
 
+export const authTokenAdmin = (req, res, next) => {
+  let token = req.headers.authorization
+  console.log(token)
+  if (!token) token = req.cookies["micookie"]
+  if (!token) return res.status(401).json({ error: 'Not auth' })
+  jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
+      if (error) return res.status(403).json({ error: 'Not authorized' })
+      console.log(credentials.user)
+      if(credentials.user.role!=='admin') return res.status(403).json({ error: 'Not authorized' })
+      req.user = credentials.user
+      next()
+  })
+}
+
+export const authTokenUser = (req, res, next) => {
+  let token = req.headers.authorization
+  if (!token) token = req.cookies["micookie"]
+  if (!token) return res.status(401).json({ error: 'Not auth' })
+  jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
+      if (error) return res.status(403).json({ error: 'Not authorized' })
+      if(credentials.user.role!=='usuario') return res.status(403).json({ error: 'Not authorized' })
+      req.user = credentials.usuario
+      next()
+  })
+}
+
 const __filename= fileURLToPath(import.meta.url)
 const __dirname = dirname(__filename)
 export default __dirname

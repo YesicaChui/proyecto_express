@@ -80,12 +80,12 @@ router.get('/githubcallback',
     })
 
 router.get('/current', authToken, (req, res) => {
-    const user = req.user
+/*     const user = req.user
     delete req.user.password;
-    console.log(user)
+    console.log(user) */
     let result = new UserDTO(req.user)
-    console.log("mi dto")
-    console.log(result)
+/*     console.log("mi dto")
+    console.log(result) */
     // res.json({ ...user })
     res.json(result)
 })

@@ -7,15 +7,16 @@ import {
   udpateProductController,
   deleteProductController
 } from '../controllers/product.controller.js'
+import { authTokenAdmin } from '../utils.js';
 
 router.get('/', getAllProductsController)
 
 router.get('/:pid', getProductByIdController)
 
-router.post('/', createProductController)
+router.post('/',authTokenAdmin, createProductController)
 
-router.put('/:pid', udpateProductController)
+router.put('/:pid',authTokenAdmin, udpateProductController)
 
-router.delete('/:pid', deleteProductController)
+router.delete('/:pid',authTokenAdmin, deleteProductController)
 
 export default router

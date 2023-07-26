@@ -18,6 +18,7 @@ export const getProductByIdController = async (req, res) => {
 }
 
 export const createProductController = async (req, res) => {
+  
   let { title, description, price, thumbnails, code, stock/* , status, category */ } = req.body
   if (!title || !description || !price || !thumbnails || !code || !stock /* || !status || !category */) {
     return res.status(400).send({ status: "error", error: "Datos incompletos" })

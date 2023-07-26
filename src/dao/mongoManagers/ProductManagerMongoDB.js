@@ -4,7 +4,7 @@ export class ProductManagerMongoDB {
     this.products = []
   }
 
-  async addProduct(title, description, price, thumbnail, code, stock/* , status, category */) {
+  async addProduct(title, description, price, thumbnails, code, stock/* , status, category */) {
     try {
       // Verificar que no exista otro producto con el mismo código
       const existingProduct = await productModel.findOne({ code })
@@ -18,7 +18,7 @@ export class ProductManagerMongoDB {
         title,
         description,
         price,
-        thumbnail,
+        thumbnails,
         code,
         stock,
 /*         status,

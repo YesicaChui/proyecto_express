@@ -1,8 +1,8 @@
 import { Router } from 'express'
-
+import { authTokenUser } from '../utils.js'
 const router = Router()
 
-router.get('/', (req, res) => {
+router.get('/', authTokenUser, (req, res) => {
     res.render('chat', {})
 })
 

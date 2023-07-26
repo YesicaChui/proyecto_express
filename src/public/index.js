@@ -9,7 +9,7 @@ socket.on('dataProduct', data => {
       <td>${item.title}</td>
       <td>${item.description}</td>
       <td>${item.price}</td>
-      <td>${item.thumbnail}</td>
+      <td>${item.thumbnails}</td>
       <td>${item.code}</td>
       <td>${item.stock}</td>
     </tr>

@@ -16,6 +16,7 @@ import chatRouter from './routes/chat.router.js'
 import Sockets from './sockets.js'
 import config from './config/config.js'
 export const PORT = config.apiserver.port
+
 const app = express()
 app.use(json())
 app.use(urlencoded({ extended: true }))
