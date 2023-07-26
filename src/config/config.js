@@ -9,5 +9,10 @@ export default {
     mongo: {
         uri: process.env.MONGO_URI,
         dbname: process.env.MONGO_DB_NAME
+    },
+    passport:{
+        clientId:process.env.PASSPORT_CLIENT_ID,
+        clientSecret:process.env.PASSPORT_CLIENT_SECRET,
+        clientCallbackUrl:process.env.PASSPORT_CALLBACK_URL,
     }
 }
