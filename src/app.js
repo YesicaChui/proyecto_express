@@ -35,8 +35,6 @@ app.use(session({
   saveUninitialized: true
 }))
 
-
-
 mongoose.set('strictQuery', false)
 initializePassport()
 app.use(passport.initialize())
@@ -59,18 +57,6 @@ try {
   app.use("/chat", chatRouter)
   
   Sockets(socketServer)
-/*   socketServer.on('connection', async(socketClient) => {
-    console.log(`Nuevo cliente ${socketClient.id} conectado...`)
-    socket.broadcast.emit('alerta')
-    let messages = await messageModel.find().lean().exec()
-    socket.emit("logs", messages)
-    socket.on("message", async data => {
-        await messageModel.create(data)
-        let messages = await messageModel.find().lean().exec()
-        io.emit("logs", messages)
-    })
-  }) */
-
 
 } catch (error) {
   console.log('No se pude conectar con la BD')

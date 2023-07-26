@@ -16,11 +16,11 @@ export class CartManagerMongoDB {
     return await cartGenerated.save()
   }
 
-  async getCartById(id) {
+/*   async getCartById(id) {
     const cart = await cartModel.findOne({ _id:id }).lean().exec()
     if(!cart) return "Not found"
     return cart
-  }
+  } */
 
   async addProductCart(cid, pid) {
     // que todos los campos sean obligatorios

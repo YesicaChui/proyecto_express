@@ -41,10 +41,6 @@ router.post('/login', passport.authenticate('login', {
         ...req.user.toObject(),
         role
     }
-    console.log(req.session.user)
-    // const access_token = generateToken(req.user.toObject())
-    // res.cookie('micookie', access_token)
-    // res.redirect('/views/products')
     req.session.save(() => {
         const access_token = generateToken(req.user.toObject())
         res.cookie('micookie', access_token)
