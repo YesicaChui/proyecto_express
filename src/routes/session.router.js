@@ -1,6 +1,7 @@
 import { Router } from "express";
 import passport from "passport"
 import { generateToken, authToken } from "../utils.js";
+import UserDTO from '../dtos/userDTO.js'
 const router = Router()
 
 //Vista para registrar usuarios
@@ -82,7 +83,11 @@ router.get('/current', authToken, (req, res) => {
     const user = req.user
     delete req.user.password;
     console.log(user)
-    res.json({ ...user })
+    let result = new UserDTO(req.user)
+    console.log("mi dto")
+    console.log(result)
+    // res.json({ ...user })
+    res.json(result)
 })
 
 export default router
