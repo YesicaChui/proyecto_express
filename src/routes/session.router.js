@@ -80,6 +80,7 @@ router.get('/githubcallback',
 
 router.get('/current', authToken, (req, res) => {
     const user = req.user
+    delete req.user.password;
     console.log(user)
     res.json({ ...user })
 })

@@ -1,4 +1,4 @@
-import productModel from "./models/product.model.js";
+import productModel from "../models/product.model.js";
 export class ProductManagerMongoDB {
   constructor(path) {
     this.products = []
@@ -113,7 +113,7 @@ export class ProductManagerMongoDB {
     }
   }
 
-  deleteProduct(id) {
+  async deleteProduct(id) {
     return productModel.deleteOne({_id: id })
       .then((result) => {
         if (result.deletedCount === 1) {
@@ -130,25 +130,3 @@ export class ProductManagerMongoDB {
   
   
 }
-// instanciamos la clase
-/* const productManager = new ProductManager('./productManager.json')
-productManager.addProduct("camisa roja","marca joh holden", 250,"ruta en firebase","CA-01", 5)
-productManager.addProduct("pantalon","marca bambita", 70,"ruta en firebase2","PA-01", 3)
-productManager.addProduct("camisa","marca sayon", 50,"ruta en firebase2","CA-01", 4)
-productManager.addProduct("zapato","zapato adidas",200,"ruta en firebase2","ZA-01",3)
-console.log(productManager.getProducts())
-console.log(productManager.getProductById(2))
-console.log(productManager.getProductById(6)) 
-
-console.log(productManager.updateProduct(2,	{  
-  "title": "pantalon grande",
-  "description": "pantalon rojo",
-  "price": 250,
-  "thumbnail": "ruta en firebase2",
-  "code": "ZA-01",
-  "stock": 2
-}))
-console.log(productManager.getProducts())
-console.log(productManager.deleteProduct(2))
-
-console.log(productManager.getProducts()) */

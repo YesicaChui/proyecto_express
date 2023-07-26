@@ -1,4 +1,4 @@
-import { CartManagerMongoDB } from '../dao/CartManagerMongoDB.js';
+import { CartManagerMongoDB } from '../dao/mongoManagers/CartManagerMongoDB.js';
 const cartManager = new CartManagerMongoDB()
 
 export const createCartController = async (req, res) => {

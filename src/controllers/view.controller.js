@@ -1,6 +1,6 @@
 
 import { getProductsFromCart } from "./cart.controller.js"
-import { ProductManagerMongoDB } from '../dao/ProductManagerMongoDB.js'
+import { ProductManagerMongoDB } from '../dao/mongoManagers/ProductManagerMongoDB.js'
 
 const productManager = new ProductManagerMongoDB()
 export const viewProductsController = async (req, res) => {

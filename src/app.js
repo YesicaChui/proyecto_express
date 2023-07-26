@@ -2,7 +2,7 @@ import express, { json, urlencoded } from "express";
 import productRouter from './routes/products.router.js'
 import cartRouter from './routes/carts.router.js'
 import handlebars from 'express-handlebars'
-import  routerViews from './routes/views.router.js'
+import routerViews from './routes/views.router.js'
 import __dirname from './utils.js'
 import { Server } from 'socket.io'
 import mongoose from 'mongoose'
@@ -14,12 +14,14 @@ import initializePassport from "./passport.config.js";
 import cookieParser from 'cookie-parser'
 import chatRouter from './routes/chat.router.js'
 import Sockets from './sockets.js'
+import config from './config/config.js'
+export const PORT = config.apiserver.port
 const app = express()
 app.use(json())
-app.use(urlencoded({extended:true}))
+app.use(urlencoded({ extended: true }))
 //configuracion handlebars
 app.engine('handlebars', handlebars.engine())
-app.set('views', __dirname+'/views')
+app.set('views', __dirname + '/views')
 app.set('view engine', 'handlebars')
 app.use(cookieParser())
 
@@ -27,8 +29,8 @@ app.use(express.static('./src/public'))
 
 app.use(session({
   store: MongoStore.create({
-      mongoUrl: 'mongodb+srv://yesicachuic:yesica@backendbasico.s7qaobr.mongodb.net',
-      dbName: 'ecommerce'
+    mongoUrl: config.mongo.uri,
+    dbName: config.mongo.dbname
   }),
   secret: 'mysecret',
   resave: true,
@@ -40,22 +42,26 @@ initializePassport()
 app.use(passport.initialize())
 app.use(passport.session())
 try {
-  await mongoose.connect('mongodb+srv://yesicachuic:yesica@backendbasico.s7qaobr.mongodb.net/ecommerce')
-  const httpServer = app.listen(8080,()=>console.log("servidor encendido en puerto 8080"))
+  //await mongoose.connect('mongodb+srv://yesicachuic:yesica@backendbasico.s7qaobr.mongodb.net/ecommerce')
+  await mongoose.connect(config.mongo.uri, {
+    dbName: config.mongo.dbname,
+    useUnifiedTopology: true
+  })
+  const httpServer = app.listen(PORT, () => console.log(`servidor encendido en puerto ${PORT}`))
   const socketServer = new Server(httpServer)
   app.use((req, res, next) => {
     req.io = socketServer
     next()
-})
+  })
   app.get('/', (req, res) => {
     res.redirect('/api/sessions/login');
   });
   app.use('/views', routerViews)
-  app.use('/products',productRouter)
-  app.use('/api/carts',cartRouter)
-  app.use('/api/sessions',sessionRouter)
+  app.use('/products', productRouter)
+  app.use('/api/carts', cartRouter)
+  app.use('/api/sessions', sessionRouter)
   app.use("/chat", chatRouter)
-  
+
   Sockets(socketServer)
 
 } catch (error) {
