@@ -2,6 +2,7 @@ import passport from "passport"
 import GitHubStrategy from 'passport-github2'
 import local from 'passport-local'
 import UserModel from "./dao/models/user.model.js"
+import CartModel from './dao/models/cart.model.js'
 import { createHash, isValidPassword } from './utils.js'
 
 const LocalStrategy = local.Strategy
@@ -19,10 +20,12 @@ const initializePassport = () => {
                 console.log('User already exists')
                 return done(null, false)
             }
-
+            const cartForNewUser = await CartModel.create({})
             const newUser = {
                 first_name, last_name, email, age, 
-                password: createHash(password)
+                password: createHash(password),
+                cart: cartForNewUser._id,
+                role: ( email == 'yesicachuic@gmail.com' || email == 'adminCoder@coder.com') ? 'admin' : 'usuario'
             }           
             const result = await UserModel.create(newUser)
             return done(null, result)
@@ -39,12 +42,14 @@ const initializePassport = () => {
         try {
             const user = await UserModel.findOne({ email: profile._json.email })
             if (user) return done (null, user)
-
+            const cartForNewUser = await CartModel.create({})
             const newUser = await UserModel.create({
                 first_name: profile._json.name,
                 last_name:"",
-                age:"",
+                age:0,
                 email: profile._json.email,
+                password: " ",
+                cart: cartForNewUser._id
             })
 
             return done(null, newUser)
@@ -57,16 +62,22 @@ const initializePassport = () => {
         usernameField: 'email'
     }, async(username, password, done) => {
         try {
+            console.log(username,password)
             const user = await UserModel.findOne({ email: username })
             if (!user) {
                 console.log('User doesnot exists')
                 return done(null, user)
             }
-
+            
+            console.log("existe")
+            console.log(user)
             if (!isValidPassword(user, password)) return done(null, false)
-
+            console.log("validado")
             return done(null, user)
-        } catch(err) {}
+        } catch(err) {
+            console.log("hay error")
+            console.log(err)
+        }
     }))
 
     passport.serializeUser((user, done) => {

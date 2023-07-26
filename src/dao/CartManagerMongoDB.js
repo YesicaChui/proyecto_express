@@ -24,7 +24,7 @@ export class CartManagerMongoDB {
 
   async addProductCart(cid, pid) {
     // que todos los campos sean obligatorios
-    if (!cid || !pid) return
+    if (!cid || !pid) return "error"
     // Validar que no se repita el campo “code” 
     const cart = await cartModel.findOne({ _id: cid }).lean().exec()
     if(!cart) return "Not found"
@@ -38,7 +38,7 @@ export class CartManagerMongoDB {
       cart.products[productIndex].quantity += 1;
     }
   
-    await cartModel.updateOne({ _id: cid }, { products: cart.products }).exec();
+    return await cartModel.findByIdAndUpdate({ _id: cid }, { products: cart.products }, { returnDocument: 'after' }).exec();
    }
 
    async removeProductCart(cid, pid) {

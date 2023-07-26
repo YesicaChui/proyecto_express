@@ -1,3 +1,6 @@
+import { CartManagerMongoDB } from '../dao/CartManagerMongoDB.js';
+const cartManager = new CartManagerMongoDB()
+
 export const createCartController = async (req,res)=>{
   const result = await cartManager.addCart()
   console.log(result)
@@ -21,10 +24,14 @@ export const getProductsFromCartController = async (req, res) => {
 export const addProductToCartController = async (req,res)=>{
   const {cid,pid}=req.params
   const cart=await cartManager.addProductCart(cid,pid)
+  if(cart==="error"){
+    return res.send({status:"error",message:"incomplete data"})
+  }
   if(cart==="Not Found"){
     return res.send({status:"error",message:"Cart Not found"})
-  }  
-  return res.send({status:"success",message:"ProductCart agregado"})
+  }
+
+  return res.send({status:"success",message:"ProductCart agregado",payload:cart})
 }
 
 export const deleteProductFromCartController = async (req, res) => {

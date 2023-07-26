@@ -1,5 +1,4 @@
 import { Router } from "express";
-import UserModel from "../dao/models/user.model.js";
 import passport from "passport"
 import { generateToken, authToken } from "../utils.js";
 const router = Router()
@@ -9,16 +8,6 @@ router.get('/register', (req, res) => {
     res.render('sessions/register')
 })
 
-// API para crear usuarios en la DB
-/* router.post('/register', async(req, res) => {
-    const userNew = req.body
-    console.log(userNew);
-
-    const user = new UserModel(userNew)
-    await user.save()
-
-    res.redirect('/api/sessions/login')
-}) */
 // API para crear usuarios en la DB
 router.post('/register', passport.authenticate('register', {
     failureRedirect: '/api/sessions/failRegister'
@@ -39,19 +28,12 @@ router.get('/login', (req, res) => {
 router.post('/login', passport.authenticate('login', {
     failureRedirect: '/api/sessions/failLogin'
 }), async (req, res) => {
+    console.log("/login inicio")
+    console.log(req.user)
     if (!req.user) {
         return res.status(400).send({ status: 'error', error: 'Invalid credentials' })
     }
-
-    /* async (req, res) => {
-    const { email, password } = req.body
-
-    const user = await UserModel.findOne({email, password}).lean().exec()
-    if(!user) {
-        return res.status(401).render('errors/base', {
-            error: 'Error en email y/o password'
-        })
-    } */
+    console.log("/login seguimos")
     const { email } = req.body
     const role = email == 'yesicachuic@gmail.com' || email == 'adminCoder@coder.com' ? 'admin' : 'usuario'
 
@@ -59,9 +41,15 @@ router.post('/login', passport.authenticate('login', {
         ...req.user.toObject(),
         role
     }
-    const access_token = generateToken(req.user.toObject())
-    res.cookie('micookie', access_token)
-    res.redirect('/views/products')
+    console.log(req.session.user)
+    // const access_token = generateToken(req.user.toObject())
+    // res.cookie('micookie', access_token)
+    // res.redirect('/views/products')
+    req.session.save(() => {
+        const access_token = generateToken(req.user.toObject())
+        res.cookie('micookie', access_token)
+        res.redirect('/views/products')
+    });
 })
 
 router.get('/failLogin', (req, res) => {
@@ -73,7 +61,10 @@ router.get('/logout', (req, res) => {
         if (err) {
             console.log(err);
             res.status(500).render('errors/base', { error: err })
-        } else res.redirect('/api/sessions/login')
+        } else {
+            res.clearCookie('micookie'); 
+            res.redirect('/api/sessions/login')
+        }
     })
 })
 

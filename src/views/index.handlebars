@@ -48,8 +48,15 @@
                     method: 'post'
                 })
             )
-            .then(result => result.json())
             .then(result => {
+              console.log("antes de json")
+              console.log(result)
+              return result.json()}
+              )
+            .then(result => {
+                console.log(result.status === 'error')
+                console.log("despues de json")
+                console.log(result)
                 if (result.status === 'error') throw new Error(result.error)
                 alert(`Ok. Todo salió bien! :)\nEl producto se agregó al carrito con id=${result.payload._id}!`)
             })
