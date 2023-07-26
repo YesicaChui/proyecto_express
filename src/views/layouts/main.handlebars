@@ -8,7 +8,7 @@
   <title>Productos</title>
   <script>
     function leerCookie() {
-      fetch('http://localhost:8080/api/sessions/current')
+      fetch('/api/sessions/current')
         .then(response => response.json())
         .then(data => {
           // Mostrar los datos en un alert

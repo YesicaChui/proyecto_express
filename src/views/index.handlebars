@@ -35,13 +35,13 @@
 </div>
 <script>
     addProductToCart = (pid) => {
-        fetch(`/api/carts`, {
-            method: 'post'
+        fetch(`/api/sessions/current`, {
+            method: 'get'
         })
             .then(result => result.json())
             .then(result => {
                 if (result.status === 'error') throw new Error(result.error)
-                return result.payload._id
+                return result.cart
             })
             .then(cid => 
                 fetch(`/api/carts/${cid}/product/${pid}`, {

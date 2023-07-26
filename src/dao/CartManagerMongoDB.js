@@ -28,7 +28,7 @@ export class CartManagerMongoDB {
     // Validar que no se repita el campo “code” 
     const cart = await cartModel.findOne({ _id: cid }).lean().exec()
     if(!cart) return "Not found"
-    const productIndex = cart.products.findIndex((product) => product.product === pid);
+    const productIndex = cart.products.findIndex((product) => product.product.toString() === pid);
     if (productIndex === -1) {
       cart.products.push({
         product: pid,
