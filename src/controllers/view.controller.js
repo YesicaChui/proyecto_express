@@ -1,18 +1,16 @@
 
 import { getProductsFromCart } from "./cart.controller.js"
-import { ProductManagerMongoDB } from '../dao/mongoManagers/ProductManagerMongoDB.js'
-
-const productManager = new ProductManagerMongoDB()
+import { ProductService } from '../repositories/index.js'
 export const viewProductsController = async (req, res) => {
   const { limit, page, query, sort } = req.query
-  const productos =await productManager.getProducts({ limit, page, query, sort })
-  //const productos = mproductos.payload.map(p => p.toObject())   
+  console.log("vista refactor")
+  const productos =await ProductService.getAll(limit, page, query, sort )
   res.render('index', {  productos,profile:req.session.user  })
 }
 
 export const viewRealTimeProductsController = async (req, res) => {
   const { limit, page, query, sort } = req.query
-  const productos =await productManager.getProducts({ limit, page, query, sort })
+  const productos =await ProductService.getAll( limit, page, query, sort )
   res.render('productsocket', { productos})
 }
 
