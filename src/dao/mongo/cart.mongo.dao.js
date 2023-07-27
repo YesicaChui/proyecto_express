@@ -1,6 +1,6 @@
 import { CartManagerMongoDB } from '../mongoManagers/CartManagerMongoDB.js';
 const cartManager = new CartManagerMongoDB()
-export default class Product {
+export default class Cart {
     constructor() {}
     addCart = async() => await cartManager.addCart()
     getCartById = async(id) =>  await cartManager.getCartById(id)

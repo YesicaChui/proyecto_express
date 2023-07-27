@@ -8,7 +8,8 @@ import {
   deleteProductFromCartController, 
   updateCartController,
   updateProductQtyFromCartController,
-  clearCartController
+  clearCartController,
+  purchase
 } from '../controllers/cart.controller.js'
 import { authTokenUser } from '../utils.js';
 //aqui las rutas de carts
@@ -26,6 +27,6 @@ router.put('/:cid/products/:pid', updateProductQtyFromCartController);
 
 router.delete('/:cid', clearCartController);
 
-
+router.post('/:cid/purchase', authTokenUser, purchase)
 
 export default router;

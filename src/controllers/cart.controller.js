@@ -1,4 +1,6 @@
-import { CartService } from '../repositories/index.js';
+import TicketModel from '../dao/models/ticket.model.js';
+
+import { CartService, ProductService } from '../repositories/index.js';
 export const createCartController = async (req, res) => {
   const result = await CartService.addCart()
   console.log(result)
@@ -92,3 +94,81 @@ export const clearCartController = async (req, res) => {
     res.status(500).json({ message: "Internal server error" });
   }
 }
+
+export const purchase = async (req, res) => {
+  try {
+    console.log("purchase", req.user)
+    const cid = req.params.cid;
+    const cart = await CartService.getCartById(cid);
+
+    if (!cart || cart.products.length === 0) {
+      return res.status(404).json({ message: "Cart not found or empty" });
+    }
+
+    // Crear un array para almacenar los productos que no pudieron ser comprados
+    const productsNotPurchased = [];
+
+    // Variable para almacenar el total de la compra
+    let totalPurchaseAmount = 0;
+
+    // Array para almacenar los productos comprados en el ticket
+    const purchasedProducts = [];
+
+    // Recorrer los productos del carrito para verificar el stock y realizar la compra
+    for (const productItem of cart.products) {
+      const product = await ProductService.getById(productItem.product);
+
+      if (!product || product.stock < productItem.quantity) {
+        // El producto no tiene suficiente stock para la cantidad indicada en el carrito
+        // Agregar el producto al array de productos no comprados
+        productsNotPurchased.push(productItem.product);
+      } else {
+        // Actualizar el stock del producto
+        product.stock -= productItem.quantity;
+        await ProductService.update(product._id, { stock: product.stock });
+
+        // Calcular el precio total del producto en base a la cantidad
+        const totalPrice = productItem.quantity * product.price;
+
+        // Sumar el precio total del producto al total de la compra
+        totalPurchaseAmount += totalPrice;
+
+        // Agregar el producto al array de productos comprados en el ticket
+        purchasedProducts.push({
+          product: productItem.product,
+          quantity: productItem.quantity,
+          totalPrice: totalPrice,
+        });
+      }
+    }
+    const outOfStockIds = productsNotPurchased.map(p => p._id);
+    if (purchasedProducts.length === 0) {
+     return  res.json({ message: "Purchase completed", ticket:{}, outOfStockIds });
+    }
+    
+    const updatedCart = {
+      products: cart.products.filter(item => {
+        const productId = item.product._id; 
+        return outOfStockIds.includes(productId);
+      })
+    }
+
+    await CartService.updateCart(cid, updatedCart); // Actualizar el carrito en la base de datos
+
+    // Crear un nuevo ticket con los detalles de la compra
+    const newTicket = new TicketModel({
+      amount: totalPurchaseAmount,
+      purchaser: req.user.email,
+      products: purchasedProducts, // Utiliza el array "purchasedProducts" que contiene los productos comprados
+    });
+
+    // Guardar el nuevo ticket en la base de datos
+    const ticket = await newTicket.save();
+
+    // Devolver la información del ticket generado
+    res.json({ message: "Purchase completed", ticket, outOfStockIds });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

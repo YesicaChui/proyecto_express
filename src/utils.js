@@ -45,7 +45,10 @@ export const authTokenUser = (req, res, next) => {
   jwt.verify(token, PRIVATE_KEY, (error, credentials) => {
       if (error) return res.status(403).json({ error: 'Not authorized' })
       if(credentials.user.role!=='usuario') return res.status(403).json({ error: 'Not authorized' })
-      req.user = credentials.usuario
+      console.log("-----")
+      console.log(credentials.user)
+      console.log("-----")
+      req.user = credentials.user
       next()
   })
 }
