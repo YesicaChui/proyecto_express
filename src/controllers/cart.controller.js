@@ -1,6 +1,4 @@
-import TicketModel from '../dao/models/ticket.model.js';
-
-import { CartService, ProductService } from '../repositories/index.js';
+import { CartService, ProductService,TicketService } from '../repositories/index.js';
 export const createCartController = async (req, res) => {
   const result = await CartService.addCart()
   console.log(result)
@@ -156,15 +154,15 @@ export const purchase = async (req, res) => {
     await CartService.updateCart(cid, updatedCart); // Actualizar el carrito en la base de datos
 
     // Crear un nuevo ticket con los detalles de la compra
-    const newTicket = new TicketModel({
+    const newTicket = {
       amount: totalPurchaseAmount,
       purchaser: req.user.email,
       products: purchasedProducts, // Utiliza el array "purchasedProducts" que contiene los productos comprados
-    });
+    };
 
     // Guardar el nuevo ticket en la base de datos
-    const ticket = await newTicket.save();
-
+    const ticket = await TicketService.create(newTicket)
+    console.log(ticket)
     // Devolver la información del ticket generado
     res.json({ message: "Purchase completed", ticket, outOfStockIds });
   } catch (error) {
