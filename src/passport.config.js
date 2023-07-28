@@ -4,6 +4,7 @@ import local from 'passport-local'
 import config from "./config/config.js"
 import { createHash, isValidPassword } from './utils.js'
 import { UserService,CartService } from "./repositories/index.js"
+import { sendEmail } from "./controllers/email.controller.js"
 const LocalStrategy = local.Strategy
 
 const initializePassport = () => {
@@ -29,6 +30,12 @@ const initializePassport = () => {
             }           
             // const result = await UserModel.create(newUser)
             const result = await UserService.create(newUser)
+            delete newUser.password;
+            const dataEmail =[
+                newUser
+            ]
+            const resultEmail=await sendEmail( email,dataEmail,"¡Haz sido registrado exitosamente!")
+            console.log(resultEmail)
             return done(null, result)
         } catch(err) {
             return done(err)

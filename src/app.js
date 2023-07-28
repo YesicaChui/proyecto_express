@@ -15,6 +15,7 @@ import cookieParser from 'cookie-parser'
 import chatRouter from './routes/chat.router.js'
 import Sockets from './sockets.js'
 import config from './config/config.js'
+import emailRoute from './routes/email.router.js'
 export const PORT = config.apiserver.port
 
 const app = express()
@@ -62,6 +63,7 @@ try {
   app.use('/api/carts', cartRouter)
   app.use('/api/sessions', sessionRouter)
   app.use("/chat", chatRouter)
+  app.use("/email",emailRoute)
 
   Sockets(socketServer)
 

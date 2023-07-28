@@ -1,4 +1,5 @@
 import { CartService, ProductService,TicketService } from '../repositories/index.js';
+import { sendEmail } from './email.controller.js';
 export const createCartController = async (req, res) => {
   const result = await CartService.addCart()
   console.log(result)
@@ -157,12 +158,25 @@ export const purchase = async (req, res) => {
     const newTicket = {
       amount: totalPurchaseAmount,
       purchaser: req.user.email,
-      products: purchasedProducts, // Utiliza el array "purchasedProducts" que contiene los productos comprados
+      products: purchasedProducts, 
     };
 
     // Guardar el nuevo ticket en la base de datos
     const ticket = await TicketService.create(newTicket)
     console.log(ticket)
+    const dataEmail = await Promise.all(purchasedProducts.map(async el => {
+      const product = await ProductService.getById(el.product);
+      return {
+        product: product.title,
+        quantity: el.quantity,
+        PU: el.totalPrice/el.quantity,
+        totalPrice: el.totalPrice,
+      };
+    }));
+    console.log("datos de email")
+    console.log(dataEmail)
+    const resultEmail=await sendEmail( req.user.email,dataEmail,`¡Ha llegado tu Comprobante de tu compra! Siendo un total de S/. ${totalPurchaseAmount}`)
+    console.log(resultEmail)
     // Devolver la información del ticket generado
     res.json({ message: "Purchase completed", ticket, outOfStockIds });
   } catch (error) {
