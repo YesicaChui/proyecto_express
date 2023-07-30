@@ -3,7 +3,6 @@ import { getProductsFromCart } from "./cart.controller.js"
 import { ProductService } from '../repositories/index.js'
 export const viewProductsController = async (req, res) => {
   const { limit, page, query, sort } = req.query
-  console.log("vista refactor")
   const productos =await ProductService.getAll(limit, page, query, sort )
   res.render('index', {  productos,profile:req.session.user  })
 }

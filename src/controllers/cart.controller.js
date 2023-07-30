@@ -1,8 +1,8 @@
 import { CartService, ProductService,TicketService } from '../repositories/index.js';
 import { sendEmail } from './email.controller.js';
+import logger from '../logger.js';
 export const createCartController = async (req, res) => {
   const result = await CartService.addCart()
-  console.log(result)
   res.send({ status: "success", message: "Cart Created", payload: result })
 }
 
@@ -33,7 +33,6 @@ export const getProductsFromCart = async (req, res) => {
 
 export const getProductsFromCartController = async (req, res) => {
   const result = await getProductsFromCart(req, res)
-  console.log("Refactor cart")
   res.status(result.statusCode).json(result.response)
 }
 
@@ -89,14 +88,13 @@ export const clearCartController = async (req, res) => {
       res.json({ message: "Cart deleted" });
     }
   } catch (error) {
-    console.error(error);
+    logger.log('error', `Error borrando carro ${req.params.cid}`)
     res.status(500).json({ message: "Internal server error" });
   }
 }
 
 export const purchase = async (req, res) => {
   try {
-    console.log("purchase", req.user)
     const cid = req.params.cid;
     const cart = await CartService.getCartById(cid);
 
@@ -163,7 +161,6 @@ export const purchase = async (req, res) => {
 
     // Guardar el nuevo ticket en la base de datos
     const ticket = await TicketService.create(newTicket)
-    console.log(ticket)
     const dataEmail = await Promise.all(purchasedProducts.map(async el => {
       const product = await ProductService.getById(el.product);
       return {
@@ -173,14 +170,12 @@ export const purchase = async (req, res) => {
         totalPrice: el.totalPrice,
       };
     }));
-    console.log("datos de email")
-    console.log(dataEmail)
     const resultEmail=await sendEmail( req.user.email,dataEmail,`¡Ha llegado tu Comprobante de tu compra! Siendo un total de S/. ${totalPurchaseAmount}`)
-    console.log(resultEmail)
+
     // Devolver la información del ticket generado
     res.json({ message: "Purchase completed", ticket, outOfStockIds });
   } catch (error) {
-    console.error(error);
+    logger.log('error', `error al ejecutar la compra ${error}`)
     res.status(500).json({ message: "Internal server error" });
   }
 };

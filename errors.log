@@ -1,1 +1,2 @@
-debug: Listening on port 8080 {"timestamp":"2023-07-30T04:53:29.142Z"}
+error: probando log error {"timestamp":"2023-07-30T08:07:38.825Z"}
+fatal: probando log fatal {"timestamp":"2023-07-30T08:07:38.827Z"}

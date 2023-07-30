@@ -1,4 +1,5 @@
 import productModel from "../models/product.model.js";
+import logger from "../../logger.js";
 export class ProductManagerMongoDB {
   constructor(path) {
     this.products = []
@@ -29,7 +30,7 @@ export class ProductManagerMongoDB {
       await product.save()
 
     } catch (error) {
-      console.error(error)
+      logger.log('error', `Error al agregar producto ${error}`)
     }
   }
 
@@ -72,7 +73,7 @@ export class ProductManagerMongoDB {
       }
       return pageObj
     } catch (error) {
-      console.error(error);
+      logger.log('error', `error al obtener productos ${error}`)
       return {
         status: "error",
         message: error.message
@@ -90,7 +91,7 @@ export class ProductManagerMongoDB {
         return "Not found"
       }
     } catch (error) {
-      console.error(error)
+      logger.log('error', `error al obtener un producto ${error}`)
     }
   }
 
@@ -109,7 +110,7 @@ export class ProductManagerMongoDB {
         return "No se ha encontrado un objeto con el id especificado."
       }
     } catch (error) {
-      console.error(error)
+      logger.log('error', `error al actualizar el producto ${error}`)
     }
   }
 
@@ -123,7 +124,7 @@ export class ProductManagerMongoDB {
         }
       })
       .catch((err) => {
-        console.error(err);
+        logger.log('error', `Error al eliminar el producto ${err}`)
         return "Error al eliminar el objeto.";
       });
   }

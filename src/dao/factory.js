@@ -4,7 +4,6 @@ export let Product
 export let Cart
 export let User
 export let Ticket
-console.log(config.persistence)
 switch (config.persistence) {
     case 'MONGO':
         const { default: ProductMongoDAO } = await import('./mongo/product.mongo.dao.js')

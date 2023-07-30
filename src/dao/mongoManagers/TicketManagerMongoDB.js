@@ -1,4 +1,5 @@
 import TicketModel from '../models/ticket.model.js';
+import logger from '../../logger.js';
 export class TicketManagerMongoDB {
   constructor() {
     this.tickets = []
@@ -40,7 +41,7 @@ export class TicketManagerMongoDB {
         return "Not found"
       }
     } catch (error) {
-      console.error(error)
+      logger.log('error', `error leyendo un carrito ${error}`)     
     }
   }
 
@@ -58,7 +59,7 @@ export class TicketManagerMongoDB {
         return "No se ha encontrado un objeto con el id especificado."
       }
     } catch (error) {
-      console.error(error)
+      logger.log('error', `error actualizando un carrito ${error}`)
     }
   }
 
@@ -72,7 +73,7 @@ export class TicketManagerMongoDB {
         }
       })
       .catch((err) => {
-        console.error(err);
+        logger.log('error', `error eliminando un carrito ${err}`)
         return "Error al eliminar el objeto.";
       });
   }

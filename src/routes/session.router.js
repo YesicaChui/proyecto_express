@@ -2,6 +2,7 @@ import { Router } from "express";
 import passport from "passport"
 import { generateToken, authToken } from "../utils.js";
 import UserDTO from '../dtos/userDTO.js'
+import logger from "../logger.js";
 const router = Router()
 
 //Vista para registrar usuarios
@@ -29,12 +30,10 @@ router.get('/login', (req, res) => {
 router.post('/login', passport.authenticate('login', {
     failureRedirect: '/api/sessions/failLogin'
 }), async (req, res) => {
-    console.log("/login inicio")
-    console.log(req.user)
     if (!req.user) {
         return res.status(400).send({ status: 'error', error: 'Invalid credentials' })
     }
-    console.log("/login seguimos")
+
     const { email } = req.body
     const role = email == 'yesicachuic@gmail.com' || email == 'adminCoder@coder.com' ? 'admin' : 'usuario'
 
@@ -56,7 +55,6 @@ router.get('/failLogin', (req, res) => {
 router.get('/logout', (req, res) => {
     req.session.destroy(err => {
         if (err) {
-            console.log(err);
             res.status(500).render('errors/base', { error: err })
         } else {
             res.clearCookie('micookie'); 
@@ -65,7 +63,9 @@ router.get('/logout', (req, res) => {
     })
 })
 
-router.get('/github', passport.authenticate('github', { scope: ["user:email"] }), (req, res) => { console.log("mi github") })
+router.get('/github', passport.authenticate('github', { scope: ["user:email"] }), (req, res) => { 
+    logger.log('info', `inicio de sesion con github`)
+ })
 router.get('/githubcallback',
     passport.authenticate('github', { failureRedirect: '/login' }),
     async (req, res) => {
@@ -80,13 +80,7 @@ router.get('/githubcallback',
     })
 
 router.get('/current', authToken, (req, res) => {
-/*     const user = req.user
-    delete req.user.password;
-    console.log(user) */
     let result = new UserDTO(req.user)
-/*     console.log("mi dto")
-    console.log(result) */
-    // res.json({ ...user })
     res.json(result)
 })
 

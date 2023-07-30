@@ -61,8 +61,6 @@ export class CartManagerMongoDB {
     if (!cid) return;
     const cart = await cartModel.findOne({ _id: cid });
     if (!cart) return "Not Found";
-    console.log("updateCart")
-    console.log(products)
     cart.products = products.products;
     // await cartModel.updateOne({ _id: cid }, { products: cart.products }).exec();
     await cart.save()

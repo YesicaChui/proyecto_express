@@ -17,6 +17,7 @@ import Sockets from './sockets.js'
 import config from './config/config.js'
 import emailRoute from './routes/email.router.js'
 import mocking from './routes/mock.router.js'
+import loggerRouter from './routes/logger.router.js'
 import errorHandler from './middlewares/error.middleware.js'
 import logger from './logger.js'
 export const PORT = config.apiserver.port
@@ -68,11 +69,12 @@ try {
   app.use("/chat", chatRouter)
   app.use("/email",emailRoute)
   app.use("/mockingproducts",mocking)
+  app.use("/loggerTest",loggerRouter)
   app.use(errorHandler)
   Sockets(socketServer)
 
 } catch (error) {
-  console.log('No se pude conectar con la BD')
+  logger.log('error', `No se pude conectar con la BD`)
 }
 
 

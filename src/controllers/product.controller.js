@@ -2,16 +2,15 @@ import CustomError from '../services/errors/custom_error.js'
 import EErros from '../services/errors/enums.js'
 import { createProductErrorInfo,AuthorizedErrorInfo } from '../services/errors/info.js'
 import { ProductService } from '../repositories/index.js'
+import logger from '../logger.js'
 export const getAllProductsController = async (req, res) => {
   const { limit, page, query, sort } = req.query
-  console.log("refactorizado")
   const result = await ProductService.getAll(limit, page, query, sort)
   res.send(result)
 }
 
 export const getProductByIdController = async (req, res) => {
   const { pid } = req.params
-  console.log(req.params)
   const product = await ProductService.getById(pid)
   if (product === "Not found") {
     res.send({ error: "Producto no existe" })
@@ -23,6 +22,7 @@ export const getProductByIdController = async (req, res) => {
 export const createProductController = async (req, res) => {
   let { title, description, price, thumbnails, code, stock/* , status, category */ } = req.body
   if (!title || !description || !price || !thumbnails || !code || !stock /* || !status || !category */) {
+    logger.log('debug', `intento de creacion de un producto con datos incompletos`)
     return res.status(400).send({ status: "error", error: "Datos incompletos" })
 /*     const product = req.body
     CustomError.createError({

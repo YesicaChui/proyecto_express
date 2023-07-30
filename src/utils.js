@@ -63,7 +63,6 @@ export const authTokenAdmin = (req, res, next) => {
           code: EErros.Authorized_ERROR
       })
       }
-      console.log(credentials.user)
       if(credentials.user.role!=='admin') {
         return res.status(403).json({ error: 'Not authorized' })
       }
@@ -94,11 +93,7 @@ export const authTokenUser = (req, res, next) => {
           code: EErros.Authorized_ERROR
       })
       }
-      console.log("continue")
       if(credentials.user.role!=='usuario') return res.status(403).json({ error: 'Not authorized' })
-      console.log("-----")
-      console.log(credentials.user)
-      console.log("-----")
       req.user = credentials.user
       next()
   })

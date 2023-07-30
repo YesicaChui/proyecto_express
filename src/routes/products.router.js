@@ -13,7 +13,7 @@ router.get('/', getAllProductsController)
 
 router.get('/:pid', getProductByIdController)
 
-router.post('/',authTokenAdmin,errorHandler, createProductController)
+router.post('/',authTokenAdmin, createProductController)
 
 router.put('/:pid',authTokenAdmin, udpateProductController)
 

@@ -4,12 +4,12 @@ dotenv.config()
 
 const customWinstonOptions = {
     levels: {
-        debug: 0,
-        http: 1,
-        info: 2,
-        warning: 3,
-        error: 4,
-        fatal: 5
+        debug: 5,
+        http: 4,
+        info: 3,
+        warning: 2,
+        error: 1,
+        fatal: 0
     },
 
     colors: {
@@ -43,7 +43,7 @@ const createLogger = env => {
     } else {
         return winston.createLogger({
             levels: customWinstonOptions.levels,
-            level: 'fatal',
+            level: 'debug',
             transports: [
                 new winston.transports.Console({
                     format: winston.format.combine(
