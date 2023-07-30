@@ -18,6 +18,7 @@ import config from './config/config.js'
 import emailRoute from './routes/email.router.js'
 import mocking from './routes/mock.router.js'
 import errorHandler from './middlewares/error.middleware.js'
+import logger from './logger.js'
 export const PORT = config.apiserver.port
 
 const app = express()
@@ -51,7 +52,7 @@ try {
     dbName: config.mongo.dbname,
     useUnifiedTopology: true
   })
-  const httpServer = app.listen(PORT, () => console.log(`servidor encendido en puerto ${PORT}`))
+  const httpServer = app.listen(PORT, () =>  logger.log('debug', `Listening on port ${PORT}`))
   const socketServer = new Server(httpServer)
   app.use((req, res, next) => {
     req.io = socketServer
