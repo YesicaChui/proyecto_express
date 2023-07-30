@@ -1,8 +1,11 @@
+import CustomError from '../services/errors/custom_error.js'
+import EErros from '../services/errors/enums.js'
+import { createProductErrorInfo,AuthorizedErrorInfo } from '../services/errors/info.js'
 import { ProductService } from '../repositories/index.js'
 export const getAllProductsController = async (req, res) => {
   const { limit, page, query, sort } = req.query
   console.log("refactorizado")
-  const result = await  ProductService.getAll(limit, page, query, sort)
+  const result = await ProductService.getAll(limit, page, query, sort)
   res.send(result)
 }
 
@@ -18,13 +21,23 @@ export const getProductByIdController = async (req, res) => {
 }
 
 export const createProductController = async (req, res) => {
-  
   let { title, description, price, thumbnails, code, stock/* , status, category */ } = req.body
   if (!title || !description || !price || !thumbnails || !code || !stock /* || !status || !category */) {
     return res.status(400).send({ status: "error", error: "Datos incompletos" })
+/*     const product = req.body
+    CustomError.createError({
+      name: 'Product creation error',
+      cause: createProductErrorInfo(product),
+      message: 'Error typing to create a product',
+      code: EErros.INVALID_TYPES_ERROR
+    })   */
+
+    
+    
+
   }
-  await  ProductService.create(title, description, price, thumbnails, code, stock/* , status, category */)
-  req.io.emit('dataProduct', await  ProductService.getAll())
+  await ProductService.create(title, description, price, thumbnails, code, stock/* , status, category */)
+  req.io.emit('dataProduct', await ProductService.getAll())
   res.send({ status: "success", message: "Product Created" })
 }
 

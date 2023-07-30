@@ -16,6 +16,8 @@ import chatRouter from './routes/chat.router.js'
 import Sockets from './sockets.js'
 import config from './config/config.js'
 import emailRoute from './routes/email.router.js'
+import mocking from './routes/mock.router.js'
+import errorHandler from './middlewares/error.middleware.js'
 export const PORT = config.apiserver.port
 
 const app = express()
@@ -64,7 +66,8 @@ try {
   app.use('/api/sessions', sessionRouter)
   app.use("/chat", chatRouter)
   app.use("/email",emailRoute)
-
+  app.use("/mockingproducts",mocking)
+  app.use(errorHandler)
   Sockets(socketServer)
 
 } catch (error) {

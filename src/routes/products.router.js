@@ -8,12 +8,12 @@ import {
   deleteProductController
 } from '../controllers/product.controller.js'
 import { authTokenAdmin } from '../utils.js';
-
+import errorHandler from '../middlewares/error.middleware.js'
 router.get('/', getAllProductsController)
 
 router.get('/:pid', getProductByIdController)
 
-router.post('/',authTokenAdmin, createProductController)
+router.post('/',authTokenAdmin,errorHandler, createProductController)
 
 router.put('/:pid',authTokenAdmin, udpateProductController)
 
