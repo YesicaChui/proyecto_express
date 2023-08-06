@@ -11,8 +11,8 @@ import jwt from 'jsonwebtoken'
 import { fakerES_MX as faker } from '@faker-js/faker'
 const PRIVATE_KEY = 'c0d3r'
 
-export const generateToken = user => {
-    const token = jwt.sign({ user }, PRIVATE_KEY, { expiresIn: '24h' })
+export const generateToken = (user,expiration='24h') => {
+    const token = jwt.sign({ user }, PRIVATE_KEY, { expiresIn: expiration })
     return token
 }
 
@@ -123,3 +123,17 @@ export const generateProduct = () => {
       category:faker.commerce.productAdjective()
   }
 }
+
+export const generateResetPasswordToken = (user) => {
+  const resetToken = jwt.sign({ userId: user._id }, PRIVATE_KEY, { expiresIn: '1h' });
+  return resetToken;
+};
+ 
+export const verifyResetPasswordToken = (token) => {
+  try {
+    const decodedToken = jwt.verify(token, PRIVATE_KEY);
+    return decodedToken.userId;
+  } catch (error) {
+    throw new Error('Invalid or expired token');
+  }
+};

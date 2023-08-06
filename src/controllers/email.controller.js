@@ -35,21 +35,7 @@ export const getbill = async (req, res) => {
   try {
     const emailUser = req.body.email
     const data= [
-/*       {
-        item: 'Bicicleta de 25 ruedas',
-        description: 'Linda bicicleta para bicletear',
-        price: 'USD10.99'
-      },
-      {
-        item: 'Bicicleta de 3 ruedas rotas',
-        description: 'Linda bicicleta para bicletear',
-        price: 'USD100.99'
-      },
-      {
-        item: 'Bicicleta de 1/2 rueda',
-        description: 'Linda bicicleta para bicletear',
-        price: 'USD101.99'
-      } */
+
       {
         item: 'Bicicleta de 25 ruedas',
         description: 'Linda bicicleta para bicletear',
@@ -66,15 +52,7 @@ export const getbill = async (req, res) => {
 }
 
 export const sendEmail = async (email, data,intro) => {
-/*   const emailUser = data.email
-  const dataEmail = data.map(async el => {
-    const product = await ProductService.getById(el.product);
-    return {
-      product: product.title,
-      quantity: el.quantity,
-      totalPrice: el.totalPrice,
-    }
-  }) */
+
   let config = {
     service: 'gmail',
     auth: {
@@ -105,11 +83,40 @@ export const sendEmail = async (email, data,intro) => {
 
   let mail = Mailgenerator.generate(response)
 
+
   let message = {
     from: process.env.GMAIL_USER,
     to: email,
-    subject: 'Compra realizada',
+    subject:intro!=='¡Haz sido registrado exitosamente!'?'Compra realizada':'Registro Ecommerce exitoso',
     html: mail
+  }
+
+  try {
+    const info = await transporter.sendMail(message)
+    return {
+      message: 'Email enviado..'
+    }
+  } catch (err) {
+    return { error: err.message }
+  }
+}
+
+export const sendSimpleEmail = async (email, link) => {
+
+  let config = {
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASS
+    }
+  }
+  let transporter = nodemailer.createTransport(config)
+
+  let message = {
+    from: process.env.GMAIL_USER,
+    to: email,
+    subject: '[Yesica e-comm API] Reset your password',
+    html: `<h1>[Yesica e-comm API] Reset your password</h1><hr />You have asked to reset your password. You can do it here: <a href=${link}>${link}</a><hr />Best regards,<br><strong>The Yesica e-comm API team</strong>`
   }
 
   try {

@@ -22,6 +22,8 @@ import errorHandler from './middlewares/error.middleware.js'
 import logger from './logger.js'
 export const PORT = config.apiserver.port
 
+import sessionViewsRouter from './routes/session.view.router.js'
+
 const app = express()
 app.use(json())
 app.use(urlencoded({ extended: true }))
@@ -59,9 +61,10 @@ try {
     req.io = socketServer
     next()
   })
-  app.get('/', (req, res) => {
+/*   app.get('/', (req, res) => {
     res.redirect('/api/sessions/login');
-  });
+  }); */
+  app.use('/', sessionViewsRouter)
   app.use('/views', routerViews)
   app.use('/products', productRouter)
   app.use('/api/carts', cartRouter)
