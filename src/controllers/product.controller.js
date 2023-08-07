@@ -20,6 +20,7 @@ export const getProductByIdController = async (req, res) => {
 }
 
 export const createProductController = async (req, res) => {
+  logger.log('debug', `ingreso a createController`)
   let { title, description, price, thumbnails, code, stock/* , status, category */ } = req.body
   if (!title || !description || !price || !thumbnails || !code || !stock /* || !status || !category */) {
     logger.log('debug', `intento de creacion de un producto con datos incompletos`)

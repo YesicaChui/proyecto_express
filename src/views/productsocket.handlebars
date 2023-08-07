@@ -1,24 +1,40 @@
+<h1>Bienvenido {{ profile.first_name }} tu rol es {{profile.role}}</h1>
 <h1>Lista de Productos WebSocket</h1>
+<hr />
+<form id="createForm">
+    <div class="m-2">Title: <input type="text" id="title"></div>
+    <div class="m-2">Description: <input type="text" id="description"></div>
+    <div class="m-2">Price: <input type="text" id="price"></div>
+    <div class="m-2">Code: <input type="text" id="code"></div>
+    <div class="m-2">Stock: <input type="text" id="stock"></div>
+    <div class="m-2">Category: <input type="text" id="category"></div>
+    <div class="m-2">Ruta imagen: <input type="text" id="thumbnails"></div>
+</form>
+<button id="createBtn" class="btn btn-primary">Create Product</button>
+<hr />
 <table border="1px">
   <tr>
-    <th>id</th>
+    <th></th>
     <th>title</th>
     <th>description</th>
     <th>price</th>
     <th>thumbnail</th>
     <th>code</th>
     <th>stock</th>
+    <th>categoria</th>
   </tr>
   <tbody id="tbody">
     {{#each productos.payload}}
     <tr>
-      <td>{{this.id}}</td>
+
+       <td><button class="" onclick="deleteProduct('{{this._id}}')">Eliminar</button></td>
       <td>{{this.title}}</td>
       <td>{{this.description}}</td>
       <td>{{this.price}}</td>
       <td>{{this.thumbnails}}</td>
       <td>{{this.code}}</td>
       <td>{{this.stock}}</td>
+      <td>{{this.category}}</td>
     </tr>
     {{/each}}
   </tbody>
@@ -34,4 +50,4 @@
     </div>
 <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script src="index.js"></script>
+<script src="/index.js"></script>

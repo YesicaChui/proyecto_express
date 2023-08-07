@@ -10,7 +10,7 @@ export const viewProductsController = async (req, res) => {
 export const viewRealTimeProductsController = async (req, res) => {
   const { limit, page, query, sort } = req.query
   const productos =await ProductService.getAll( limit, page, query, sort )
-  res.render('productsocket', { productos})
+  res.render('productsocket', { productos,profile:req.session.user})
 }
 
 export const viewProductsFromCartController = async(req, res) => {
