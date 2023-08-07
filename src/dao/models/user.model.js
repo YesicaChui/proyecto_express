@@ -9,7 +9,11 @@ const userSchema = new mongoose.Schema({
     age: { type: Number, required: true },
     password: { type: String, required: true },
     cart: { type: mongoose.Schema.Types.ObjectId, ref: "carts" },
-    role: { type: String, default: 'user' }
+    role: {
+        type: String,
+        enum: ['admin', 'usuario', 'premium'], 
+        default: 'usuario' 
+      }
 })
 
 mongoose.set("strictQuery", false)

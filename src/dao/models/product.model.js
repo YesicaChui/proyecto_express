@@ -9,7 +9,7 @@ const productSchema = new mongoose.Schema({
 		code: String,
 		stock: Number,
 		category:String,
-		
+		owner: { type: String, default: 'admin', ref: "users" }
 })
 
 productSchema.plugin(mongoosePaginate)

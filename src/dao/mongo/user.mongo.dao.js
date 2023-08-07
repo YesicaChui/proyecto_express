@@ -7,6 +7,6 @@ export default class User {
     getOne = async(email) => await UserModel.findOne({ email: email })
     getById = async(id) => await  UserModel.findById(id)
     create = async(data) => await  UserModel.create(data)
-    // update = async(id, data) => await productModel.findByIdAndUpdate(id, data, { returnDocument: 'after' })
+    update = async(id, data) => await UserModel.findByIdAndUpdate(id, data, { returnDocument: 'after' })
     // delete = async(id) => await productModel.findByIdAndDelete(id)
 }

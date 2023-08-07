@@ -32,7 +32,7 @@ router.post('/login', passport.authenticate('login', {
     }
 
     const { email } = req.body
-    const role = email == 'yesicachuic@gmail.com' || email == 'adminCoder@coder.com' ? 'admin' : 'usuario'
+    const role = email == 'yesicachuic@gmail.com' || email == 'adminCoder@coder.com' ? 'admin' : 'user'
 
     req.session.user = {
         ...req.user.toObject(),
@@ -66,7 +66,7 @@ router.get('/github', passport.authenticate('github', { scope: ["user:email"] })
 router.get('/githubcallback',
     passport.authenticate('github', { failureRedirect: '/' }),
     async (req, res) => {
-        const role = req.user.email == 'yesicachuic@gmail.com' || req.user.email == 'adminCoder@coder.com' ? 'admin' : 'usuario'
+        const role = req.user.email == 'yesicachuic@gmail.com' || req.user.email == 'adminCoder@coder.com' ? 'admin' : 'user'
         //req.session.user = req.user
 
         req.session.user = {
@@ -138,6 +138,17 @@ router.post('/reset-password/:user', async (req, res) => {
         await user.save();
         res.json({ status: 'success', message: 'Se ha creado una nueva contraseña' })
     } catch (err) {
+        res.json({ status: 'error', error: err.message })
+    }
+})
+
+router.get('/premium/:uid', async (req, res) => {
+    try {
+
+        const user = await  UserService.getById(req.params.uid)
+        await UserService.update(req.params.uid, { role: user.role === 'user' ? 'premium' : 'user' })
+        res.json({ status: 'success', message: 'Se ha actualizado el rol del usuario' })
+    } catch(err) {
         res.json({ status: 'error', error: err.message })
     }
 })

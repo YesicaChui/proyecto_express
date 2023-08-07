@@ -69,6 +69,7 @@ try {
   app.use('/products', productRouter)
   app.use('/api/carts', cartRouter)
   app.use('/api/sessions', sessionRouter)
+  app.use('/api/users', sessionRouter)
   app.use("/chat", chatRouter)
   app.use("/email",emailRoute)
   app.use("/mockingproducts",mocking)

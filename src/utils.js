@@ -93,7 +93,7 @@ export const authTokenUser = (req, res, next) => {
           code: EErros.Authorized_ERROR
       })
       }
-      if(credentials.user.role!=='usuario') return res.status(403).json({ error: 'Not authorized' })
+      if(credentials.user.role!=='user') return res.status(403).json({ error: 'Not authorized' })
       req.user = credentials.user
       next()
   })

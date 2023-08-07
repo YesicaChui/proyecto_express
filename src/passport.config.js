@@ -27,7 +27,7 @@ const initializePassport = () => {
                 first_name, last_name, email, age, 
                 password: createHash(password),
                 cart: cartForNewUser._id,
-                role: ( email == 'yesicachuic@gmail.com' || email == 'adminCoder@coder.com') ? 'admin' : 'usuario'
+                role: ( email == 'yesicachuic@gmail.com' || email == 'adminCoder@coder.com') ? 'admin' : 'user'
             }           
             // const result = await UserModel.create(newUser)
             const result = await UserService.create(newUser)
