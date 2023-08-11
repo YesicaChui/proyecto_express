@@ -5,8 +5,10 @@ export class ProductManagerMongoDB {
     this.products = []
   }
 
-  async addProduct(title, description, price, thumbnails, code, stock/* , status, category */) {
+  async addProduct(data/* , status, category */) {
     try {
+      console.log(data)
+      const code = data.code
       // Verificar que no exista otro producto con el mismo código
       const existingProduct = await productModel.findOne({ code })
       if (existingProduct) {
@@ -14,20 +16,19 @@ export class ProductManagerMongoDB {
       }
 
       // Crear un nuevo producto con los datos recibidos
-      const product = new productModel({
-        id: null, // El id se autogenera en la base de datos
-        title,
-        description,
-        price,
-        thumbnails,
-        code,
-        stock,
-/*         status,
-        category, */
-      })
-
-      // Guardar el nuevo producto en la base de datos
-      await product.save()
+      // const product = new productModel({
+      //   id: null, // El id se autogenera en la base de datos
+      //   title,
+      //   description,
+      //   price,
+      //   thumbnails,
+      //   code,
+      //   stock,
+      // })
+      // const product = new productModel(data)
+      // // Guardar el nuevo producto en la base de datos
+      // await product.save()
+      await productModel.create(data)
 
     } catch (error) {
       logger.log('error', `Error al agregar producto ${error}`)

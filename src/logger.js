@@ -12,17 +12,17 @@ const customWinstonOptions = {
         fatal: 0
     },
 
-    colors: {
-        debug: 'white',
-        http: 'green',
-        info: 'blue',
-        warning: 'yellow',
-        error: 'orange',
-        fatal: 'red'
-    }
+    // colors: {
+    //     debug: 'white',
+    //     http: 'green',
+    //     info: 'blue',
+    //     warning: 'yellow',
+    //     error: 'orange',
+    //     fatal: 'red'
+    // }
 }
 
-winston.addColors(customWinstonOptions.colors)
+//winston.addColors(customWinstonOptions.colors)
 
 const createLogger = env => {
     if (env === 'PROD') {

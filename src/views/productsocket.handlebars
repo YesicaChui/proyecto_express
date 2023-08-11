@@ -27,7 +27,7 @@
     {{#each productos.payload}}
     <tr>
 
-       <td><button class="" onclick="deleteProduct('{{this._id}}')">Eliminar</button></td>
+       <td><button class="" data-product-id="${item._id}">Eliminar</button></td>
       <td>{{this.title}}</td>
       <td>{{this.description}}</td>
       <td>{{this.price}}</td>

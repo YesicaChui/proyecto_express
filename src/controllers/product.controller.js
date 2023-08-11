@@ -37,13 +37,23 @@ export const createProductController = async (req, res) => {
     
 
   }
-  await ProductService.create(title, description, price, thumbnails, code, stock/* , status, category */)
+ const product = req.body
+ console.log(req.user)
+ console.log(req.user.email)
+ product.owner = req.user.email
+  await ProductService.create(product/* , status, category */)
   req.io.emit('dataProduct', await ProductService.getAll())
   res.send({ status: "success", message: "Product Created" })
 }
 
 export const udpateProductController = async (req, res) => {
   let { pid } = req.params
+  if (req.session.user.role === 'premium') {
+    const product = await ProductService.getById(pid)
+    if (product.owner !== req.session.user.email) {
+        return res.status(403).json({ status: 'error', error: 'Not Authorized' })
+    }
+}
   const mensaje = await ProductService.update(pid, req.body)
   if (mensaje === "No se ha encontrado un objeto con el id especificado.") {
     return res.status(404).send({ status: "error", message: "Producto no encontrado" })
@@ -53,7 +63,15 @@ export const udpateProductController = async (req, res) => {
 }
 
 export const deleteProductController = async (req, res) => {
+  console.log("mis datos",req.params)
   let { pid } = req.params
+  if (req.session.user.role === 'premium') {
+    const product = await ProductService.getById(pid)
+    if (product.owner !== req.session.user.email) {
+        return res.status(403).json({ status: 'error', error: 'Not Authorized' })
+    }
+}
+
   const mensaje = await ProductService.delete(pid)
   if (mensaje === "No se ha encontrado un objeto con el id especificado.") {
     return res.status(404).send({ status: "error", message: "Producto no encontrado" })

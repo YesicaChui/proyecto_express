@@ -63,7 +63,7 @@ export const authTokenAdmin = (req, res, next) => {
           code: EErros.Authorized_ERROR
       })
       }
-      if(credentials.user.role!=='admin') {
+      if (credentials.user.role !== 'admin' && credentials.user.role !== 'premium') {
         return res.status(403).json({ error: 'Not authorized' })
       }
       req.user = credentials.user

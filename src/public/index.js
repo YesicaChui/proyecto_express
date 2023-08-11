@@ -3,10 +3,11 @@ socket.on('dataProduct', midata => {
   const data = midata.payload;
   let tbody = document.getElementById('tbody')
   let productosText = ''
+  console.log(data)
   data.forEach(item => {
     productosText+= `
     <tr>
-      <td><button class="" onclick="deleteProduct(${item.id})">Eliminar</button></td>
+      <td><button class="delete-button" data-product-id="${item._id}">Eliminar</button></td>
       <td>${item.title}</td>
       <td>${item.description}</td>
       <td>${item.price}</td>
@@ -38,10 +39,17 @@ socket.on('dataProduct', midata => {
             'Content-Type': 'application/json'
         },
     })
-        .then(result => result.json())
         .then(result => {
+            console.log(result)
+            if (result.status ===403) {
+                throw new Error('No tienes autorizacion');
+              }
+            return result.json()
+        })
+        .then(result => {
+            console.log(result)
             if (result.status === 'error') throw new Error(result.error)        
-            alert(`Ok. Todo salió bien! :)\nEl producto se ha agregado con éxito!\n\nVista actualizada!`)
+            alert(`Ok. Todo salió bien! :)\nEl producto se ha agregado con éxito!\n\nVista actualizadaaa!`)
             document.getElementById('title').value = ''
             document.getElementById('description').value = ''
             document.getElementById('price').value = ''
@@ -53,7 +61,11 @@ socket.on('dataProduct', midata => {
         .catch(err => alert(`Ocurrió un error :(\n${err}`))
 })
 
+
+
 deleteProduct = (id) => {
+    console.log("borrando")
+    console.log(id)
     fetch(`/products/${id}`, {
         method: 'delete',
     })
@@ -64,3 +76,10 @@ deleteProduct = (id) => {
         })
         .catch(err => alert(`Ocurrió un error :(\n${err}`))
 }
+
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete-button')) {
+        const productId = event.target.getAttribute('data-product-id');
+        deleteProduct(productId);
+    }
+});
