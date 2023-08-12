@@ -38,8 +38,6 @@ export const createProductController = async (req, res) => {
 
   }
  const product = req.body
- console.log(req.user)
- console.log(req.user.email)
  product.owner = req.user.email
   await ProductService.create(product/* , status, category */)
   req.io.emit('dataProduct', await ProductService.getAll())
@@ -63,7 +61,6 @@ export const udpateProductController = async (req, res) => {
 }
 
 export const deleteProductController = async (req, res) => {
-  console.log("mis datos",req.params)
   let { pid } = req.params
   if (req.session.user.role === 'premium') {
     const product = await ProductService.getById(pid)

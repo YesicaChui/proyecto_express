@@ -20,13 +20,30 @@ import mocking from './routes/mock.router.js'
 import loggerRouter from './routes/logger.router.js'
 import errorHandler from './middlewares/error.middleware.js'
 import logger from './logger.js'
+import swaggerJsdoc from 'swagger-jsdoc'
+import swaggerUiExpress from 'swagger-ui-express'
+
 export const PORT = config.apiserver.port
 
 import sessionViewsRouter from './routes/session.view.router.js'
 
+
+const swaggerOptions = {
+  definition: {
+    openapi: '3.0.1',
+    info: {
+      title: 'Documentacion de la Ecommerce Yesica',
+      description: 'Esta es la documentación del ecommerce de la plataforma de ventas de productos'
+    }
+  },
+  apis: [`./docs/**/*.yaml`]
+}
+const specs = swaggerJsdoc(swaggerOptions)
+
 const app = express()
 app.use(json())
 app.use(urlencoded({ extended: true }))
+app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 //configuracion handlebars
 app.engine('handlebars', handlebars.engine())
 app.set('views', __dirname + '/views')
@@ -74,6 +91,7 @@ try {
   app.use("/email",emailRoute)
   app.use("/mockingproducts",mocking)
   app.use("/loggerTest",loggerRouter)
+  app.use('/docs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
   app.use(errorHandler)
   Sockets(socketServer)
 

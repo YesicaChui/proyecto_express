@@ -1,0 +1,173 @@
+
+paths:
+  /products/ :
+    get:
+      summary: Obtiene todos los productos
+      tags:
+        - Product
+      responses:
+        "200":
+          description:  Los productos fueron obtenidos satisfactoriamente de la base de datos
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#components/schemas/Product'
+        "500":
+          description:  Error interno del servidor, usualmente generado por una query defectuosa o un fallo de conexion
+    post:
+      summary: Crea un nuevo producto
+      tags:
+        - Product
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/schemas/Product'
+      responses:
+        "201":
+          description: Producto creado satisfactoriamente
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Product'
+        "500":
+          description: Error interno del servidor
+
+  /products/{pid}:
+    get:
+      summary: Obtiene un solo producto a partir de su id
+      tags:
+        - Product
+      parameters:
+      - name: pid
+        in: path
+        description: id del producto que se desea solicitar
+        schema:
+          $type:  String
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Product'
+        "404":
+          description: Producto no encontrado en la base de datos
+    put:
+      summary: Actualiza un producto a partir de su id
+      tags:
+        - Product
+      parameters:
+      - name: pid
+        in: path
+        required: true
+        description: id del Producto que se desea actualizar
+        schema:
+          $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updateProduct'
+    delete:
+      summary: Elimina un producto por ID
+      tags:
+        - Product
+      parameters:
+        - name: pid
+          in: path
+          description: ID del producto que se desea eliminar
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Producto eliminado satisfactoriamente
+        "404":
+          description: Producto no encontrado
+        "500":
+          description: Error interno del servidor
+
+
+components:
+  schemas:
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description:  Id autogenerado de mongo
+        title:
+          type: String
+          description:  Nombre del producto
+        description:
+          type: String
+          description:  Detalle del producto
+        price:
+          type: Number
+          description:  Precio del producto
+        thumbnails:
+          type: String
+          description: Ruta de imagen del producto
+        code:
+          type: String
+          description: Cdoigo unico del producto para clasificación
+        stock:
+          type: Number
+          description: Numero de productos disponibles
+        category:
+          type: String
+          description: Tipo de categoria del producto
+        owner:
+          type: String
+          description: email del usuario que creo el producto
+      example:
+        _id: ObjectId('64c06476')
+        title: Croquetas de gato
+        description: Alimento para gatos
+        price: 20
+        thumbnails: ruta en firebase
+        code: ALM-01
+        stock: 15
+        category: mascotas
+        owner: yesicachuic@gmail.com
+  requestBodies:
+    updateProduct:
+      type: Object
+      properties:
+        title:
+          type: String
+          description:  Nombre del producto
+        description:
+          type: String
+          description:  Detalle del producto
+        price:
+          type: Number
+          description:  Precio del producto
+        thumbnails:
+          type: String
+          description: Ruta de imagen del producto
+        code:
+          type: String
+          description: Codigo unico del producto para clasificación
+        stock:
+          type: Number
+          description: Numero de productos disponibles
+        category:
+          type: String
+          description: Tipo de categoria del producto
+        owner:
+          type: String
+          description: email del usuario que creo el producto
+      example:
+        title: Croquetas de gato
+        description: Alimento para gatos
+        price: 20
+        thumbnails: ruta en firebase
+        code: ALM-01
+        stock: 15
+        category: mascotas
+        owner: yesicachuic@gmail.com

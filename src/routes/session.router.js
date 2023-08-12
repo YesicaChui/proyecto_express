@@ -33,8 +33,6 @@ router.post('/login', passport.authenticate('login', {
 
     const { email } = req.body
     const miUser = await UserService.getOne(email)
-    console.log(miUser.role)
-    console.log("---------")
     const role = email == 'yesicachuic@gmail.com' || email == 'adminCoder@coder.com' ? 'admin' : miUser.role
 
     req.session.user = {

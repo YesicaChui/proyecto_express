@@ -7,7 +7,6 @@ export class ProductManagerMongoDB {
 
   async addProduct(data/* , status, category */) {
     try {
-      console.log(data)
       const code = data.code
       // Verificar que no exista otro producto con el mismo código
       const existingProduct = await productModel.findOne({ code })

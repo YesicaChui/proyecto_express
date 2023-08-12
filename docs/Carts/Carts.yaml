@@ -1,0 +1,226 @@
+paths:
+  /api/carts/:
+    post:
+      summary: Crea un nuevo carrito
+      tags:
+        - Cart
+      responses:
+        "200":
+          description: Carrito creado exitosamente
+        "500":
+          description: Error interno del servidor
+
+  /api/carts/{cid}:
+    get:
+      summary: Obtiene un solo carrito a partir de su id
+      tags:
+        - Cart
+      parameters:
+      - name: cid
+        in: path
+        description: id del carrito que se desea solicitar
+        schema:
+          $type:  String
+      responses:
+        "200":
+          description: cart encontrado
+          content:
+            application/json:
+              schema:
+                $ref: '#components/schemas/Cart'
+        "404":
+          description: Carrito no encontrado en la base de datos
+    put:
+      summary: Actualiza un carrito a partir de su id
+      tags:
+        - Cart
+      parameters:
+      - name: cid
+        in: path
+        required: true
+        description: id del Carrito que se desea actualizar
+        schema:
+          $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#components/requestBodies/updateCart'
+    delete:
+      summary: Vacía un carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+      responses:
+        "200":
+          description: Carrito vaciado exitosamente
+        "404":
+          description: Carrito no encontrado en la base de datos
+
+  /api/carts/{cid}/products/{pid}:
+    put:
+      summary: Actualiza la cantidad de un producto en el carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto
+          schema:
+            type: string
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                quantity:
+                  type: number
+                  description: Nueva cantidad del producto en el carrito
+              example:
+                quantity: 3
+      responses:
+        "200":
+          description: Cantidad de producto en el carrito actualizada exitosamente
+        "404":
+          description: Carrito o producto no encontrado en la base de datos
+    delete:
+      summary: Elimina un producto del carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto
+          schema:
+            type: string
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: Producto eliminado del carrito exitosamente
+        "404":
+          description: Carrito o producto no encontrado en la base de datos
+        "500":
+          description: Error interno del servidor
+
+  /api/carts/{cid}/product/{pid}:
+    post:
+      summary: Agrega un producto al carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto
+          schema:
+            type: string
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: Producto agregado al carrito exitosamente
+        "404":
+          description: Carrito o producto no encontrado en la base de datos
+        "500":
+          description: Error interno del servidor
+
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Realiza una compra desde el carrito
+      tags:
+        - Cart
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          description: ID del carrito
+          schema:
+            type: string
+      security:
+        - jwtAuth: []
+      responses:
+        "200":
+          description: Compra realizada exitosamente
+        "404":
+          description: Carrito no encontrado en la base de datos
+        "500":
+          description: Error interno del servidor
+
+components:
+  schemas:
+    Cart:
+      type: object
+      properties:
+        _id:
+          type: string
+          description: Id autogenerado de mongo
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: ID del producto en el carrito
+              quantity:
+                type: number
+                description: Cantidad del producto en el carrito
+      example:
+        _id: '64c06476'
+        products:
+          - product: '64c06476'
+            quantity: 5
+          - product: '64c06477'
+            quantity: 3
+
+  requestBodies:
+    updateCart:
+      type: object
+      properties:
+        products:
+          type: array
+          items:
+            type: object
+            properties:
+              product:
+                type: string
+                description: ID del producto en el carrito
+              quantity:
+                type: number
+                description: Cantidad del producto en el carrito
+      example:
+        products:
+          - product: '64c06476'
+            quantity: 2
+          - product: '64c06477'
+            quantity: 1

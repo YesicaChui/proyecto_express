@@ -17,15 +17,17 @@ router.post('/',createCartController)
 
 router.get('/:cid', getProductsFromCartController);
 
+router.put('/:cid', updateCartController);
+
+router.delete('/:cid', clearCartController);
+
 router.post('/:cid/product/:pid',authTokenUser, addProductToCartController)
 
 router.delete('/:cid/products/:pid', deleteProductFromCartController);
 
-router.put('/:cid', updateCartController);
 
 router.put('/:cid/products/:pid', updateProductQtyFromCartController);
 
-router.delete('/:cid', clearCartController);
 
 router.post('/:cid/purchase', authTokenUser, purchase)
 
