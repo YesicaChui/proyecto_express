@@ -1,7 +1,8 @@
 import mongoose from "mongoose";
-import productModel from "./models/product.model.js";
+import productModel from "./dao/models/product.model.js";
 
-const uri = 'mongodb+srv://yesicachuic:yesica@backendbasico.s7qaobr.mongodb.net/'
+// const uri = 'mongodb+srv://yesicachuic:yesica@backendbasico.s7qaobr.mongodb.net/'
+const uri = 'mongodb://localhost:27017/'
 
 const main = async ()=>{
   await mongoose.connect(uri,{
