@@ -143,7 +143,7 @@ router.post('/reset-password/:user', async (req, res) => {
     }
 })
 
-router.get('/premium/:uid', async (req, res) => {
+/* router.get('/premium/:uid', async (req, res) => {
     try {
 
         const user = await  UserService.getById(req.params.uid)
@@ -152,6 +152,6 @@ router.get('/premium/:uid', async (req, res) => {
     } catch(err) {
         res.json({ status: 'error', error: err.message })
     }
-})
+}) */
 
 export default router

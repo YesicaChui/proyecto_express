@@ -7,6 +7,7 @@ import __dirname from './utils.js'
 import { Server } from 'socket.io'
 import mongoose from 'mongoose'
 import sessionRouter from './routes/session.router.js'
+import userRouter from './routes/user.router.js';
 import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from 'passport'
@@ -86,7 +87,7 @@ try {
   app.use('/products', productRouter)
   app.use('/api/carts', cartRouter)
   app.use('/api/sessions', sessionRouter)
-  app.use('/api/users', sessionRouter)
+  app.use('/api/users', userRouter)
   app.use("/chat", chatRouter)
   app.use("/email",emailRoute)
   app.use("/mockingproducts",mocking)
