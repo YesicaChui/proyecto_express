@@ -34,6 +34,8 @@ router.post('/login', passport.authenticate('login', {
     const { email } = req.body
     const miUser = await UserService.getOne(email)
     const role = email == 'yesicachuic@gmail.com' || email == 'adminCoder@coder.com' ? 'admin' : miUser.role
+    const currentDate = new Date();
+    await UserService.update(req.user._id, { last_connection: currentDate });
 
     req.session.user = {
         ...req.user.toObject(),
@@ -50,7 +52,11 @@ router.get('/failLogin', (req, res) => {
     res.send({ error: 'Fail Login' })
 })
 // Cerrar Session
-router.get('/logout', (req, res) => {
+router.get('/logout',async (req, res) => {
+    const userId = req.user._id;
+    const currentDate = new Date();
+    await UserService.update(userId, { last_connection: currentDate });
+
     req.session.destroy(err => {
         if (err) {
             res.status(500).render('errors/base', { error: err })

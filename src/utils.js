@@ -141,9 +141,7 @@ export const verifyResetPasswordToken = (token) => {
 };
 
 export const configureMulter = (destinationPath) => {
-  console.log(destinationPath)
   try {
-    console.log("entrando")
     const storage = multer.diskStorage({
       destination: (req, file, cb) => {
         cb(null, path.join(__dirname, '..', './src/public', destinationPath));
