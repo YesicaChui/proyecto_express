@@ -1,5 +1,7 @@
 import { UserService } from "../repositories/index.js";
 import { UserPrincipalDTO } from "../dtos/userDTO.js";
+import { subDays } from 'date-fns';
+import { CartService } from "../repositories/index.js";
 export const setPhotoProfileUsersController = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -40,6 +42,28 @@ export const setDocumentsUsersController = async (req, res) => {
 export const getAllUsersController = async (req, res) => {
   const result = await UserService.getAll()
   console.log(result)
-  const miresult =result.map(elemento=>new UserPrincipalDTO(elemento))
-  res.send({payload:miresult})
+  const miresult = result.map(elemento => new UserPrincipalDTO(elemento))
+  res.send({ payload: miresult })
 }
+
+export const deleteAllInactiveUsersController = async (req, res) => {
+
+  const twoDaysAgo = subDays(new Date(), 2); // Calcula la fecha hace 2 días
+  try {
+    const usersToDelete = await UserService.getInactives(twoDaysAgo)
+    const result = await UserService.cleanInactiveUsers(twoDaysAgo)
+    for (const userToDelete of usersToDelete) {
+      await CartService.deleteCart(userToDelete.cart);      
+    }
+
+   // console.log(result)
+   res.send({ message: `${result.deletedCount} usuarios eliminados.` })
+  
+  } catch (error) {
+    console.log(error)
+    res.send({ error: error.message })
+  }
+};
+
+
+
