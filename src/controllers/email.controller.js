@@ -128,3 +128,31 @@ export const sendSimpleEmail = async (email, link) => {
     return { error: err.message }
   }
 }
+
+export const sendGenericEmail = async (email,asunto, mensaje) => {
+
+  let config = {
+    service: 'gmail',
+    auth: {
+      user: process.env.GMAIL_USER,
+      pass: process.env.GMAIL_PASS
+    }
+  }
+  let transporter = nodemailer.createTransport(config)
+
+  let message = {
+    from: process.env.GMAIL_USER,
+    to: email,
+    subject: asunto,
+    html: `<h1>${mensaje}</h1>`
+  }
+
+  try {
+    const info = await transporter.sendMail(message)
+    return {
+      message: 'Email enviado..'
+    }
+  } catch (err) {
+    return { error: err.message }
+  }
+}
