@@ -1,5 +1,5 @@
 import { UserService } from "../repositories/index.js";
-
+import { UserPrincipalDTO } from "../dtos/userDTO.js";
 export const setPhotoProfileUsersController = async (req, res) => {
   try {
     const userId = req.params.id;
@@ -36,3 +36,10 @@ export const setDocumentsUsersController = async (req, res) => {
   }
 
 };
+
+export const getAllUsersController = async (req, res) => {
+  const result = await UserService.getAll()
+  console.log(result)
+  const miresult =result.map(elemento=>new UserPrincipalDTO(elemento))
+  res.send({payload:miresult})
+}

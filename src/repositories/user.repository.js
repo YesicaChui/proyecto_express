@@ -3,6 +3,7 @@ export default class UserRepository {
       this.dao = dao
   }
 
+  getAll = async() => await this.dao.getAll()
   getOne = async(email) => await this.dao.getOne(email)
   getById = async(id) => await this.dao.getById(id)
   create = async(data) => await this.dao.create(data)

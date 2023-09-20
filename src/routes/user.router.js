@@ -1,7 +1,7 @@
 import express from 'express';
 import { UserService } from "../repositories/index.js";
 import { configureMulter } from '../utils.js';
-import { setDocumentsUsersController, setPhotoProfileUsersController } from '../controllers/user.controller.js';
+import { getAllUsersController, setDocumentsUsersController, setPhotoProfileUsersController } from '../controllers/user.controller.js';
 const uploadProfilePhoto = configureMulter('img/profile');
 const uploadDocuments = configureMulter('documents');
 const router = express.Router();
@@ -27,6 +27,8 @@ router.get('/premium/:uid', async (req, res) => {
     res.json({ status: 'error', error: err.message })
   }
 })
+
+router.get('/', getAllUsersController)
 
 
 export default router;
