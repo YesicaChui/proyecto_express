@@ -43,10 +43,10 @@ export class CartManagerMongoDB {
 
    async removeProductCart(cid, pid) {
     if (!cid || !pid) return;
-    const cart = await cartModel.findOne({ _id: cid });
+    const cart = await cartModel.findById(cid);
     if (!cart) return "Not Found";
     const productIndex = cart.products.findIndex(
-      (product) => product.product === pid
+      (product) => product.product == pid
     );
     if (productIndex === -1) {
       return "Not Found";

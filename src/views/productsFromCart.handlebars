@@ -9,18 +9,32 @@
             <td><strong>Código</strong></td>
             <td><strong>Stock</strong></td>
             <td><strong>Cantidad</strong></td>
+            <td><strong>Eliminar</strong></td>
         </tr>
     </thead>
     <tbody>
         {{#each cart.products}}
-        <tr>
+        <tr >
             <td>{{this.product.title}}</td>
             <td>{{this.product.description}}</td>
             <td>{{this.product.price}}</td>
             <td>{{this.product.code}}</td>
             <td>{{this.product.stock}}</td>
             <td>{{this.quantity}}</td>
+            <td><button type="button" onclick="eliminarProducto('{{this.product._id}}', '{{@root.cart._id}}')">Eliminar</button>
+</td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<script>
+    const eliminarProducto = async (pid, cid) => {
+
+        console.log(pid,cid)
+        const respuesta=await fetch(`/api/carts/${cid}/products/${pid}`, {
+            method: 'DELETE',
+        });
+        const data = await respuesta.json()
+        console.log(data)
+    }
+</script>
