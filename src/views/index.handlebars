@@ -3,7 +3,8 @@
 <a href="/api/sessions/logout"><button>Cerrar Sesion32</button></a>
 <button onclick="leerCookie()">Mostrar datos de token</button>
 <button type="button" onclick="adminUser()" id="btnAdminUser">{{profile.role}}</button>
-
+<button type="button" onclick="adminProduct()" id="btnAdminProduct">{{profile.role}}</button>
+<button type="button" onclick="verCarrito()" id="btnVerCarrito">Ver Carrito</button>
 <table border="1px">
   <tr>
     <th>id</th>
@@ -38,17 +39,28 @@
 <script>
   const adminUser = () => {
     console.log("navegar")
-      window.location.href = '/views/users'; 
+    window.location.href = '/views/users';
+  }
+  const verCarrito = () => {
+    
+  }
+  const adminProduct = () => {
+    console.log("navegar")
+    window.location.href = '/views/realtimeproducts';
   }
   const validarAdmin = () => {
     const btnAdminUser = document.getElementById('btnAdminUser')
+    const btnAdminProduct = document.getElementById('btnAdminProduct')
     if (btnAdminUser.innerText !== 'admin') {
       btnAdminUser.style.display = 'none'
-      console.log('no eres admin')
-      return
+      if (btnAdminProduct.innerText !== 'premium') {
+        btnAdminProduct.style.display = 'none'
+
+      }
     }
-    btnAdminUser.innerText='Ver Usuarios'
-    console.log('eres admin')
+
+    btnAdminProduct.innerText = 'Administrar Productos'
+    btnAdminUser.innerText = 'Ver Usuarios'
   }
   validarAdmin()
 
