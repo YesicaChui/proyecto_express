@@ -74,4 +74,19 @@ export const deleteAllInactiveUsersController = async (req, res) => {
 };
 
 
+export const deleteOne = async (req, res) => {
+
+  const userIdToDelete = req.params.id;
+  console.log(userIdToDelete)
+  try {
+    const userDelete = await UserService.delete(userIdToDelete);
+    await CartService.deleteCart(userDelete.cart);
+    res.send({ message: `Usuario eliminado con exito` })
+  
+  } catch (error) {
+    console.log(error)
+    res.send({ error: 'Error eliminando el usuario' })
+  }
+};
+
 

@@ -1,7 +1,7 @@
 import express from 'express';
 import { UserService } from "../repositories/index.js";
 import { configureMulter } from '../utils.js';
-import { getAllUsersController, setDocumentsUsersController, setPhotoProfileUsersController, deleteAllInactiveUsersController } from '../controllers/user.controller.js';
+import { deleteOne,getAllUsersController, setDocumentsUsersController, setPhotoProfileUsersController, deleteAllInactiveUsersController } from '../controllers/user.controller.js';
 const uploadProfilePhoto = configureMulter('img/profile');
 const uploadDocuments = configureMulter('documents');
 const router = express.Router();
@@ -30,6 +30,6 @@ router.get('/premium/:uid', async (req, res) => {
 
 router.get('/', getAllUsersController)
 router.delete('/', deleteAllInactiveUsersController)
-
+router.delete('/delete/:id',deleteOne)
 
 export default router;
