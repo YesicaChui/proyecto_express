@@ -12,29 +12,60 @@
             <td><strong>Eliminar</strong></td>
         </tr>
     </thead>
-    <tbody>
+    <tbody id="dataProduct">
         {{#each cart.products}}
-        <tr >
+        <tr>
             <td>{{this.product.title}}</td>
             <td>{{this.product.description}}</td>
             <td>{{this.product.price}}</td>
             <td>{{this.product.code}}</td>
             <td>{{this.product.stock}}</td>
             <td>{{this.quantity}}</td>
-            <td><button type="button" onclick="eliminarProducto('{{this.product._id}}', '{{@root.cart._id}}')">Eliminar</button>
-</td>
+            <td><button type="button"
+                    onclick="eliminarProducto('{{this.product._id}}', '{{@root.cart._id}}')">Eliminar</button>
+            </td>
         </tr>
         {{/each}}
     </tbody>
 </table>
+<button onclick="finalizarCompra('{{@root.cart._id}}')" type="button" id="btnFinalizar">Finalizar Compra</button>
+<button onclick="volver()" type="button" id="btnVolver">Volver</button>
 <script>
+    const volver = () => {
+        window.location.href = '/views/products';
+    }
+    const validarVerBoton = () => {
+        const dataProduct = document.getElementById("dataProduct")
+        const btnFinalizar = document.getElementById('btnFinalizar')
+        if (dataProduct.innerText === '') {
+            btnFinalizar.style.display = 'none'
+        }
+
+    }
+    validarVerBoton()
     const eliminarProducto = async (pid, cid) => {
 
-        console.log(pid,cid)
-        const respuesta=await fetch(`/api/carts/${cid}/products/${pid}`, {
+        console.log(pid, cid)
+        const respuesta = await fetch(`/api/carts/${cid}/products/${pid}`, {
             method: 'DELETE',
         });
         const data = await respuesta.json()
         console.log(data)
+    }
+
+    const finalizarCompra = async (cid) => {
+
+        const respuesta = await fetch(`/api/carts/${cid}/purchase`, {
+            method: 'POST',
+        });
+        const data = await respuesta.json()
+        if (data.message === 'Purchase completed') {
+            alert("Gracias por su compra")
+            window.location.reload();
+        } else {
+            alert('ha habido un error')
+        }
+        console.log(data)
+        validarVerBoton()
     }
 </script>
