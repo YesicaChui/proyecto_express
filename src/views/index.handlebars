@@ -1,7 +1,7 @@
 <h1>Bienvenido {{ profile.first_name }} tu rol es {{profile.role}}</h1>
 <h2>Lista de Productos</h2>
 <a href="/api/sessions/logout"><button>Cerrar Sesion32</button></a>
-<button onclick="leerCookie()">Mostrar datos de token</button>
+<button onclick="VerPerfil()">Mostrar datos de token</button>
 <button type="button" onclick="adminUser()" id="btnAdminUser">{{profile.role}}</button>
 <button type="button" onclick="adminProduct()" id="btnAdminProduct">{{profile.role}}</button>
 <button type="button" onclick="verCarrito()" id="btnVerCarrito">Ver Carrito</button>
@@ -37,12 +37,26 @@
   {{/if}}
 </div>
 <script>
+  const VerPerfil = async () => {
+    try {
+      const data = await leerCookie()
+      alert(`Codigo:${data.id} nombre: ${data.full_name} correo:${data.email} edad:${data.age} Rol: ${data.role} carrito:${data.cart}`)
+      console.log("fin lectura")
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const adminUser = () => {
     console.log("navegar")
     window.location.href = '/views/users';
   }
-  const verCarrito = () => {
-    
+  const verCarrito = async() => {
+    try {
+      const data = await leerCookie()
+       window.location.href = `/views/${data.cart}`;
+    } catch (error) {
+      console.log(error)
+    }
   }
   const adminProduct = () => {
     console.log("navegar")
