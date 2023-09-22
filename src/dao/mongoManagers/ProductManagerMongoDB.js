@@ -114,19 +114,38 @@ export class ProductManagerMongoDB {
     }
   }
 
+  // async deleteProduct(id) {
+  //   return productModel.deleteOne({_id: id })
+  //     .then((result) => {
+  //       if (result.deletedCount === 1) {
+  //         return "El objeto se ha eliminado correctamente.";
+  //       } else {
+  //         return "No se ha encontrado un objeto con el id especificado.";
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       logger.log('error', `Error al eliminar el producto ${err}`)
+  //       return "Error al eliminar el objeto.";
+  //     });
+  // }
   async deleteProduct(id) {
-    return productModel.deleteOne({_id: id })
-      .then((result) => {
-        if (result.deletedCount === 1) {
-          return "El objeto se ha eliminado correctamente.";
-        } else {
-          return "No se ha encontrado un objeto con el id especificado.";
-        }
-      })
-      .catch((err) => {
-        logger.log('error', `Error al eliminar el producto ${err}`)
-        return "Error al eliminar el objeto.";
-      });
+    try {
+      // Obtén el producto antes de eliminarlo
+      const productToDelete = await productModel.findById(id);
+  
+      if (!productToDelete) {
+        return "No se ha encontrado un objeto con el id especificado.";
+      }
+  
+      // Elimina el producto
+      await productModel.deleteOne({ _id: id });
+  
+      // Devuelve el producto eliminado
+      return productToDelete;
+    } catch (error) {
+      logger.log('error', `Error al eliminar el producto ${error}`);
+      return "Error al eliminar el objeto.";
+    }
   }
   
   
