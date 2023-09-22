@@ -2,6 +2,8 @@
 <h2>Lista de Productos</h2>
 <a href="/api/sessions/logout"><button>Cerrar Sesion32</button></a>
 <button onclick="leerCookie()">Mostrar datos de token</button>
+<button type="button" onclick="adminUser()" id="btnAdminUser">{{profile.role}}</button>
+
 <table border="1px">
   <tr>
     <th>id</th>
@@ -34,28 +36,45 @@
   {{/if}}
 </div>
 <script>
-    addProductToCart = (pid) => {
-        fetch(`/api/sessions/current`, {
-            method: 'get'
-        })
-            .then(result => result.json())
-            .then(result => {
-                if (result.status === 'error') throw new Error(result.error)
-                return result.cart
-            })
-            .then(cid => 
-                fetch(`/api/carts/${cid}/product/${pid}`, {
-                    method: 'post'
-                })
-            )
-            .then(result => {
-              return result.json()}
-              )
-            .then(result => {
-                if (result.status === 'error') throw new Error(result.error)
-                alert(`Ok. Todo salió bien! :)\nEl producto se agregó al carrito con id=${result.payload._id}!`)
-            })
-            .catch(err => alert(`Ocurrió un error :(\n${err}`))
-        
+  const adminUser = () => {
+    console.log("navegar")
+      window.location.href = '/views/users'; 
+  }
+  const validarAdmin = () => {
+    const btnAdminUser = document.getElementById('btnAdminUser')
+    if (btnAdminUser.innerText !== 'admin') {
+      btnAdminUser.style.display = 'none'
+      console.log('no eres admin')
+      return
     }
+    btnAdminUser.innerText='Ver Usuarios'
+    console.log('eres admin')
+  }
+  validarAdmin()
+
+  addProductToCart = (pid) => {
+    fetch(`/api/sessions/current`, {
+      method: 'get'
+    })
+      .then(result => result.json())
+      .then(result => {
+        if (result.status === 'error') throw new Error(result.error)
+        return result.cart
+      })
+      .then(cid =>
+        fetch(`/api/carts/${cid}/product/${pid}`, {
+          method: 'post'
+        })
+      )
+      .then(result => {
+        return result.json()
+      }
+      )
+      .then(result => {
+        if (result.status === 'error') throw new Error(result.error)
+        alert(`Ok. Todo salió bien! :)\nEl producto se agregó al carrito con id=${result.payload._id}!`)
+      })
+      .catch(err => alert(`Ocurrió un error :(\n${err}`))
+
+  }
 </script>

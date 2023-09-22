@@ -1,0 +1,118 @@
+<h2>Administración de Usuarios</h2>
+<table border="1px">
+  <tr>
+    <th>id</th>
+    <th>nombre</th>
+    <th>correo</th>
+    <th>Rol</th>
+    <th>Subir Foto</th>
+    <th>Subir documento</th>
+    <th>Cambiar a Premium</th>
+    <th>Eliminar usuario</th>
+  </tr>
+  <tbody id="tbody"></tbody>
+  {{!-- <tr>
+    <td>1</td>
+    <td>Juanito</td>
+    <td>Juanito@gmail.com</td>
+    <td>admin</td>
+    <td><input type="file" accept="image/*" id="inputFoto" /></td>
+    <td><input type="file" accept="image/*" id="inputDocumento" /></td>
+    <td><button onclick="cambiarPremium(${id})">Premium</button></td>
+    <td><button>Eliminar</button></td>
+  </tr> --}}
+
+</table>
+
+<script>
+  const cargarUsuarios = () => {
+    fetch(`/api/users`, {
+      method: 'get'
+    })
+      .then(result => result.json())
+      .then(result => {
+        const tbody = document.getElementById('tbody')
+        let datosTemplate = ''
+        result.payload.forEach((el) => {
+          const inputFotoId = `inputFoto_${el.id}`;
+          const inputDocumentoId = `inputDocumento_${el.id}`;
+          datosTemplate += `
+              <tr>
+                <td>${el.id}</td>
+                <td>${el.full_name}</td>
+                <td>${el.email}</td>
+                <td>${el.role}</td>
+                <td><input type="file" accept="image/*" id="${inputFotoId}" /></td>
+                <td><input type="file" accept="image/*" id="${inputDocumentoId}" /></td>
+                <td><button onclick="cambiarPremium('${el.id}', '${inputFotoId}', '${inputDocumentoId}')" type="button">Premium</button></td>
+                <td><button type="button" onclick="eliminarUsuario('${el.id}')">Eliminar</button></td>
+              </tr>
+          `
+        })
+        tbody.innerHTML = datosTemplate
+        console.log(result)
+        console.log(result.payload)
+      })
+      .catch(err => alert(`Ocurrió un error :(\n${err}`))
+  }
+  cargarUsuarios()
+
+  const cambiarPremium = async (id, inputFotoId, inputDocumentoId) => {
+    const inputFoto = document.getElementById(inputFotoId);
+    const inputDocumento = document.getElementById(inputDocumentoId);
+    if (inputFoto.files.length === 0) {
+      alert('Por favor, seleccione una foto de Perfil.');
+      return;
+    }
+    if (inputDocumento.files.length === 0) {
+      alert('Por favor, seleccione la foto de un documento.');
+      return;
+    }
+    const formDataPerfil = new FormData();
+    formDataPerfil.append('photo', inputFoto.files[0]);
+    const formDataDocumento = new FormData();
+    formDataDocumento.append('document', inputDocumento.files[0]);
+    try {
+      await fetch(`/api/users/${id}/profiles`, {
+        method: 'POST',
+        body: formDataPerfil,
+      });
+      await fetch(`/api/users/${id}/documents`, {
+        method: 'POST',
+        body: formDataDocumento,
+      });
+      const user = await fetch(`/api/users/premium/${id}`);
+      const userData = await user.json()
+      console.log(userData)
+      console.log("fin")
+      alert('Se actualizo a Premium')
+      window.location.reload();
+    } catch (err) {
+      alert(`Ocurrió un error :(\n${err}`);
+    }
+  }
+
+// ... Código anterior ...
+
+const eliminarUsuario = async (id) => {
+  try {
+    const response = await fetch(`/api/users/delete/${id}`, {
+      method: 'DELETE',
+    });
+
+    if (response.ok) {
+      console.log(`Usuario con ID ${id} eliminado con éxito.`);
+      alert("Se elimino al usuario exitosamente")
+      window.location.reload();
+    } else {
+      alert("Error al eliminar al usuario")
+      console.error(`Error al eliminar el usuario con ID ${id}.`);
+    }
+  } catch (err) {
+    console.error(`Ocurrió un error: ${err}`);
+  }
+};
+
+// ... Resto del código ...
+
+</script>

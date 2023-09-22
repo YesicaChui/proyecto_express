@@ -77,7 +77,10 @@ export const deleteAllInactiveUsersController = async (req, res) => {
 export const deleteOne = async (req, res) => {
 
   const userIdToDelete = req.params.id;
-  console.log(userIdToDelete)
+/*   console.log(userIdToDelete)
+  console.log(req.session?.user)
+  console.log(req.session.user?.role)
+  console.log("ingresando a borrar") */
   try {
     const userDelete = await UserService.delete(userIdToDelete);
     await CartService.deleteCart(userDelete.cart);

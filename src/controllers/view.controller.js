@@ -21,3 +21,12 @@ export const viewProductsFromCartController = async(req, res) => {
       res.status(result.statusCode).json({ status: 'error', error: result.response.error })
   }
 }
+
+export const viewUsersController = (req, res) => {
+  console.log("renderizando user")
+  if (req.session.user?.role === 'admin') {
+      res.render('userAdmin',{})
+  }else{
+    return res.status(403).json({ status: 'error', error: 'Not Authorized' })
+  }
+}
